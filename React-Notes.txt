@@ -628,23 +628,177 @@ We suggest that you begin by typing:
   npm start
 
 Happy hacking!
+..............................................................................................
+			React Project layout- created by create-react-app
+.............................................................................................
+
+Folder Structure
+
+myapp
+ |
+ node_modules
+ package.json
+ package-lock.json
+ public 
+ src
+ readme.md
 
 
+node_modules
+  It is folder contains all libs files and folders downloaded from internet.
+  React lib has been downloaded and kept inside this folder only.
+
+package.json
+   Every javascript project(it can be any js project), has package.json file  
+   This file contains information about the project
+
+Basic information:
+ ->Name of the application "name" :"myapp"
+ ->version of the application "version": "1.0.0"
+ ->dedendencies
+     libs  required for dev ,testing, production
+    you can understand what version of lib is used in the current project
+ ->scripts
+     scripts contains information about how to start dev server,testing,production build.
+
+package-lock.json:
+  This file used by dev ops tools.
 
 
+public 
+  index.html
+  This is entry file in react application.
+  without this file we cant start the application
+
+src
+ |
+ index.js
+  App.js
+ This folder contains application code files.
+
+readme.md
+   this is documentation file
+
+..............................................................................................
+			    How to start dev server(Development server)
+.............................................................................................
+
+npm start
+..............................................................................................
+
+How react creates dom tree(v.dom) and attaches on existing tree?
+
+-You need to launch inital tree - which is not created by react.
+ creating inital tree by loading static html file into browser 
+ index.html
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <!--
+      manifest.json provides metadata used when your web app is installed on a
+      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html>
+.............................................................................................
+			How to create dom node , attach on existing tree
+				using plain js
+
+				
+Note : 
+ index.js
+
+//How to create simple element using plain javascript
+
+function createElement() {
+    let Heading = document.createElement('h1')
+    console.log(Heading)
+    Heading.innerHTML = "Hello React!"
+    let rootElement = document.getElementById('root')
+    rootElement.appendChild(Heading)
+}
+createElement()
+.............................................................................................
+			How to create dom node , attach on existing tree
+				using react.js
+		
+React core modules:
+
+react.js      => Core module
+react-dom.js  => Browser
 
 
+//How to create dom element using React
+import React from 'react';
+import ReactDOM from 'react-dom';
 
+//declare React element(which represents element)
+const Heading = <h1>Hello React!!</h1>
 
+let rootElement = document.getElementById('root')
+ReactDOM.render(Heading,rootElement)
 
+The code above , we can see mixure of javascript and html.
 
+How browser understands this code coimbination?
 
+  The browser never understands this code directly.
 
+What is this code is all about?
+    
+ Face book created a mini /small language for building react application - JSX language
+.............................................................................................
+			...........................................................................................
+		 JSX - Java script and XML - langugage to create User interfaces
+............................................................................................
 
+React uses declarative and dsl  programming language
 
+Declarative:
+  =>more readable , like english
+ 
+DSL:
+  Language created for only one specific purpose, cant be used for other domains
 
-
-
+HTML -  can be used only for creating web document.
+JSX  - can be used only by react for creating user interfaces.
+  
+       "Since jsx  is a language cant be executed on browser /mobile directly."
 
 
 
