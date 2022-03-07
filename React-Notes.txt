@@ -1,0 +1,460 @@
+				     React
+....................................................................................
+
+Software setup:
+
+1.vs code
+2.node
+3.chrome
+.............................................................................................
+
+What is React?
+
+ React is javascript lib for building user interface applications for web.
+
+What is User interface application?
+ 
+  The user where he interacts , those applications are called user interface applications.
+
+Eg:
+  Desktop applications
+     if you want to interact with os, shell is primary user interface
+     shell in windows, command,powershell,explorer 
+
+  Web Browser:
+     It is one of the application software, acts as user interface for web applications
+
+ 
+ Hand Held devices
+  =>Mobile applications
+  =>Watch
+  =>Tabs
+ etc..
+
+What is lib,framework?
+
+Both frameworks and libraries are code written by someone else that is used to help solve "common problems".
+
+lib: 
+  Which is used to solve only one type of problem in large problems.
+eg:
+ jquery,react,......
+
+Framework:
+   Which is used to solve many problems under one place
+Angular,Vue,Polymer.......
+............................................................................................
+					Web
+............................................................................................
+
+What is Web?
+
+Web is the distributed software system which distributes information over internet(Type of network).
+
+Distributed software means , sharing information to many machines over networks.
+
+Types of Distributed System:
+
+1.Mainframe based distributed system - 1960.
+    Mainframe is server, clients are dump terminals
+2.Micro Computer based distributed system - client -server-  1970s
+  Server would be either mainframework or micro computer.
+  Clients are micro computer.
+  
+3.Micro Computer based distibuted system -1970 to 1989
+   3.1.single tier(layer)
+      Server code and client code would be in the same machine.
+   3.2. two tier(layer)
+      Server code  is kept in the separate machine and client code is kept in the separate       machine, both machines communicate via networks(LAN,WAN,MAN).
+   3.3. three tier(layer)
+      Server code  is kept in the separate machine,Database also kept machine and client code    is kept in the separate       machine, both machines communicate via networks(LAN,WAN,MAN).
+4. N- tier architecture -1989...
+     Web based,internet based architecture.
+
+What is web and history of web?
+
+Web is distibuted system , built on internet
+
+Where the web was born
+
+Tim Berners-Lee, a British scientist, invented the World Wide Web (WWW) in 1989, while working at CERN. 
+The web was originally conceived and developed to meet the demand for automated information-sharing between scientists in universities and institutes around the world.
+
+The first web site
+http://info.cern.ch/hypertext/WWW/TheProject.html
+The web server
+The first web server was "Next Computer".
+
+The first web client(browser) was line mode web browser.
+............................................................................................
+
+The technologies were created as part of web
+
+=>HTML 
+    HTML is programming language which is used to create web documents. which can be sent over internet
+=>Web Server
+    It is program which is used to distribute the web documents over internet
+=>Web Agent(Browser
+   It is program which is used to view the distributed web documents from the server
+
+=>HTTP 
+    It is transport protocal which carries web documents over internet.
+..............................................................................................
+				  Types of Web Application
+..............................................................................................
+
+1.Static web application - 1989 - 1995
+   Preparing html documents by hand about organization,something
+
+2.Dynamic content generation web application -1995 to till date
+  =>HTML pages are prepared by the program not by hand.
+  =>HTML Pages may contain information about company,customers,products but these information     are present inside database.
+  =>we introduce the program which connects database , prepares html pages , and sends back to     the web server.
+DCG Web application technologies:
+   ->CGI - Common gate way interface -  perl,c language used to connect db,prepare html pages.
+   ->J2EE - Servlets, JSP
+   ->ASP - Micro soft -  Active Server Pages
+   ->PHP - Open Source Project
+
+3. Web Service - 1999 to till date
+  
+   In DCG technology, users can send request , get response in the form of html pages, where    browsers renders those html pages 
+  
+   B To B Integration : Biz to Biz integration
+
+   One biz organization can send information to other biz organization via internet with web
+
+   Web service is program which can send data to other webservice program , process them    accordingly
+   
+ if you are sending data from one system to another system , each system is running on various different languages
+
+ eg:
+  java objects cant be sent to PHP.
+
+ how to make data both parties must understand.
+
+ Data interchange format techonlogy was introduced- common format for both systems.
+ In 2000, In the US , The data interchange conference was held.
+ In the conference many data formats were proposed
+ 
+ 1.XML
+ 2.JSON
+ 3.text
+ 4.ascii
+ etc 25 formats
+
+At end of the conference , XML Was selected as primary data interchange format.
+
+HTTP protocal was desinged to send only html documents over internet. if you want to send xml,
+then how to send it.
+ The new application protocal was designed , SOAP(Simple Object Access Protocal)
+
+Types of Web Service:
+
+=>XML based webservice / SOAP based WebService
+   -Programs exchange xml as primary data format
+
+Fall of SOAP Web Services:
+
+->SOAP web services are very complex to build and maintain due to various standards 
+->Performance is very less , because over network not only data is sent but its meta data is also transported.
+->Soap which restricts only one data format - XML
+etc......
+
+=>RESTFull Web Service
+
+ Restfull webservice is webservice model introduced alternate to SOAP Based web based services based on "Rest Architecture" , purly depends http protocal only.
+
+->We can send any of type of data not only xml
+->Primary format is "JSON".
+->Multi format support
+->Native HTTP protocal support
+->very light weight
+
+.............................................................................................
+				Client Side Web Technology
+.............................................................................................
+
+Browser based Client side web technology:
+.........................................
+
+Static web page rendering: 1989 to 1995
+
+The web browsers sends the request,once html pages are ready, it renders.
+
+Dynamic Content rendering : 1996 to till.
+..............................................................................................
+				HTML  internal work flow
+.............................................................................................
+HTML:
+
+1.HTML IS PL? - YES
+2.HTML Is compiled -YES
+3.HTML is excuted-YES
+
+java
+ -source .java
+ -compile -.class -assembly
+ -excute -jvm--result
+
+index.html -source code
+
+<html>
+<head></head>
+<title><title>
+<body>
+  <div>
+     <h1>Welcome</h1>
+  </div>
+</body>
+</html>
+
+-------------------Browser
+loader---LOAD Code into browser
+ |
+   from file: or http:
+ |
+Parser : Parser is special compiler which converts source into lexcial tree(string tree)
+ |
+body
+  div
+     h1
+        Welcome 
+     h1
+  div
+body
+|
+ Complier-Compilation : Convert this into assembly
+|
+body -load xxx
+  div
+     h1
+        Welcome 
+     h1
+  div
+body
+|
+-------------------------Execution cycle------------------------------------
+HTML Execution engine : Request Os ,to allocate memory :Runtime
+
+-LinkedList
+
+body -Node
+  div -Node
+     h1 -Node
+        Welcome -Node
+     h1
+  div
+body
+
+ Linking the Nodes: Tree
+body  -Node
+  |
+  div -Node
+    |
+     h1 -Node
+      |
+        Welcome -Node
+        |
+     h1
+  div
+body
+...
+|
+|
+|
+Layout/Paint Engine: will convert nodes into pxs : final output
+..............................................................................................
+				Dynamic HTML - Inside Web Browser
+.............................................................................................
+
+Once the html has been rendered by the web browser, can we change the html(adding new element,updating existing element content,removing node,listing nodes).
+
+The company called Netscap communcation, the second web browser creator after line mode web browser.
+
+The NetsCap communication introduced the browser called netscap navigator , today firefox.
+
+The netscap introduced a new technology called how to change html after rendering.
+
+In 1996,Netscap communication,Started an RND project called "How to manipulate the tree"
+
+Tree is written in c language,then we need another c program to communicate.
+
+But NETSCAP decided not to use C pl.
+
+Netscap wanted to put java like implementation inside browser to manipulate "Tree".
+
+                        "The birth of Javascript"
+
+How to access nodes from javascript engine?
+  
+One spec was published ,As per that spec
+ "Document Object Model"
+    -How to represent document(elements/nodes) in object oriented way.->DOM
+
+ "Documents can be reprsented as Objects" : Object oriented Document Programming.
+............................................................................................
+How dom works?
+
+index.html           Broser runtime(C program)         Javascript Engine
+<h1>Hello</h1>       h1-Node                           h1- Object
+			Hello-Node			 Hello Object Property
+
+
+
+                 Every Html ELEMENT Inside Browser is "C Program"
+
+	       Every Html ELEMENT javascript engine is "Object"
+
+
+javascript developer ---->uses api --->to communicate Object---->js engine---->browser engine.	*******************************************************************************************	
+
+Who and when "H1" object is created?
+
+if you want to create object?
+
+ class/ function
+
+function Employee(){}  let emp = new Employee()
+
+
+<h1> => function HTMLHeadingElement(){} => let h =new HTMLHeadingElement() ?
+
+
+
+if you want to create object?
+
+ class/ function
+
+function Employee(){}  let emp = new Employee()
+
+<h1> => function HTMLHeadingElement(){} => let h =new HTMLHeadingElement() ?
+
+Note: For html elements, we cant create object directly, rather than JS Engine will create objects , return references to the developer to access.
+
+How via factory Objects: object helps to get other documents
+
+Factory Object : HTML Document =>body
+
+document.getElementById();
+   |
+Implicit object reference variable which points HTMLDocument OBject.
+
+
+What is our objective here? DOM Programming?
+
+
+Enter into DOM programming:
+
+1.write dom programming using javascript language.
+
+<body>
+  |
+HTMLDocument : body : factory Object
+
+
+Document apis:
+
+Finding HTML Elements:
+......................
+
+HTMLElement document.getElementById(id)	       Find an element by element id
+HTMLElement Document document.getElementsByTagName(name)	Find elements by tag name
+HTMLElement document.getElementsByClassName(name)	Find elements by class name
+HTMLElement document.querySelectory(selector)        find element/elements by selector
+
+
+Changing HTML Elements : update existing element
+......................
+element.innerHTML =  new html content	Change the inner HTML of an element
+element.attribute = new value	Change the attribute value of an HTML element
+element.style.property = new style	Change the style of an HTML element
+Method	Description
+element.setAttribute(attribute, value)	Change the attribute value of an HTML element
+
+Adding and Deleting Elements:
+
+
+document.createElement(element)	Create an HTML element
+document.removeChild(element)	Remove an HTML element
+document.appendChild(element)	Add an HTML element
+document.replaceChild(new, old)	Replace an HTML element
+.............................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
