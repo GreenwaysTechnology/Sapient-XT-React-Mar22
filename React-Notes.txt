@@ -380,6 +380,312 @@ document.removeChild(element)	Remove an HTML element
 document.appendChild(element)	Add an HTML element
 document.replaceChild(new, old)	Replace an HTML element
 .............................................................................................
+				DOM Programming
+.............................................................................................
+
+How to implement dom programming?
+
+1.using plain js
+  if we use plain js , it is very difficult to build large applications
+
+2.using frameworks and libs
+
+2000 - The first javascript framework - DOJO
+2002-2005 - JQuery - is the second most powerfull dom lib.
+After 2006 - many js libs and frameworks introduced.....
+..............................................................................................
+
+
+Before 2007 - 
+
+  HTML pages were created at server side, sent to the client , where jquery like javascript libs and frameworks were introduced to change the rendered html.
+ After introduction of REST Full web services, Technology was changed.
+ 
+ =>Server side programs only render data(json/xml) - REST APIS
+ =>client side technology uses data json, where to create html pages.
+
+                   "The birth of new Web App  - SPA - Single Web Application"
+
+=SPA  is new Web Application introduced by "W3C"   as part of new HTML Spec.
+
+SPA Tech Stack:
+1.HTML 5
+2.CSS 3
+3.Javascript
+4.AJAX
+
+SPA is client side web application.
+ =>creates html pages on the browser itself by getting data from the server via ajax.
+
+2008 - Angular js framework was introduced
+   The first MVC based SPA Framework
+............................................................................................
+				  Modern web
+
+In the client side is SPA , server side REST 
+..............................................................................................
+				     React
+
+   "React is modern SPA lib created by face book based on "Flux Design Pattern" "
+
+
+
+Architecture for libs and frameworks:
+Plain JS
+			 Application(dom) -plain js
+			     |
+			 Javascript Engine
+			      |
+			 Browser Engine
+
+
+
+
+Framework/lib
+			 Application(JQuery)
+			     |
+		       ---------------------------
+			  JQuery Engine	------javascript programming		
+                       -------------------------------
+			      |
+			 Javascript Engine
+			      |
+			  Browser Engine
+
+
+
+What is jquery engine?
+  Jquery engine is also javascript program.
+
+
+
+
+Angular
+			 Application(Angular)
+			     |
+		       ---------------------------
+			  Angular Engine : Renderer(Ng2) Renderer2(Ng4,5),Ivy(6,7)		
+                       -------------------------------
+			      |
+			 Javascript Engine
+			      |
+			  Browser Engine
+
+React
+
+
+		       Application(React)
+			     |
+		       ---------------------------
+	             React Engine :React fiber-->React 16 on wards		
+                       -------------------------------
+			      |
+			 Javascript Engine
+			      |
+			  Browser Engine
+
+..............................................................................................
+				React Future
+..............................................................................................
+
+React was built by face book only for web browsers, later facebook decided to scale react for building other types of user application (mobile,iot applications).
+
+React can be used to build application for 
+........................................
+1.browsers : Desktop -  react js
+2.Mobile Apps : React Native
+
+face book is working on many futures projects related to react
+3.React VR : Virtual Reality.
+4.React Car : For car applications
+5.React TV  : React for TV.
+6.React IOT : any devices
+.............................................................................................
+				React Applications
+
+You can build any type of spa using react for any domain.
+React is really suitable for data intensive applications(where data is more)
+
+Popular React applications.
+
+1.facebook most apps like adv,chart,messenger
+2.espn cric info
+3.flipkart
+etc....
+.............................................................................................
+				React Echo System
+.............................................................................................
+
+1.Node.js
+2.npm
+
+What is node.js?
+
+ Node.js is platform for building,testing,prototype any javascript applications.
+ Node.js is java script runtime  for setting up projects.
+
+Role of node.js in React?
+
+=>Node.js provides compiler for react for compiling code
+=>Node.js provides dev,testing servers for dev and testing
+=>Node.js provides build tools for creating prodution builds
+ 
+     "Node provides infra structure for building react apps"
+
+NPM - Node package Manager.
+
+ => It is tool used to setup project,downloading all project artifacts,compiling,running,building projects.
+
+
+Yarn  - Node package manger
+ 
+ It is advanced package manager similar to npm only.
+
+..............................................................................................
+				Setup React Project
+..............................................................................................
+
+Create React App - tool to setup project
+https://create-react-app.dev/
+
+Two ways of setting project 
+
+via npm global modules
+via npx modules
+
+via npm:
+
+Install tool:
+
+open cmd:
+
+install tool first
+npm install create-react-app -g
+
+create a app
+create-react-app my-app
+
+Create project directly without installing create-react-app tool
+
+npx create-react-app my-app
+
+..............................................................................................
+
+E:\session\sapient\React-XT>create-react-app myapp
+
+Creating a new React app in E:\session\sapient\React-XT\myapp.
+
+Installing packages. This might take a couple of minutes.
+Installing react, react-dom, and react-scripts with cra-template...
+
+
+added 1367 packages in 45s
+
+169 packages are looking for funding
+  run `npm fund` for details
+
+Installing template dependencies using npm...
+npm WARN deprecated source-map-resolve@0.6.0: See https://github.com/lydell/source-map-resolve#deprecated
+
+added 38 packages in 5s
+
+169 packages are looking for funding
+  run `npm fund` for details
+Removing template package using npm...
+
+
+removed 1 package, and audited 1405 packages in 3s
+
+169 packages are looking for funding
+  run `npm fund` for details
+
+6 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+Success! Created myapp at E:\session\sapient\React-XT\myapp
+Inside that directory, you can run several commands:
+
+  npm start
+    Starts the development server.
+
+  npm run build
+    Bundles the app into static files for production.
+
+  npm test
+    Starts the test runner.
+
+  npm run eject
+    Removes this tool and copies build dependencies, configuration files
+    and scripts into the app directory. If you do this, you can’t go back!
+
+We suggest that you begin by typing:
+
+  cd myapp
+  npm start
+
+Happy hacking!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
