@@ -420,9 +420,10 @@ SPA is client side web application.
 2008 - Angular js framework was introduced
    The first MVC based SPA Framework
 ............................................................................................
-				  Modern web
+				     Modern web
 
 In the client side is SPA , server side REST 
+In the server SPA can be prepared , sent to the client- Server side rendering
 ..............................................................................................
 				     React
 
@@ -477,7 +478,7 @@ React
 		       Application(React)
 			     |
 		       ---------------------------
-	             React Engine :React fiber-->React 16 on wards		
+	              React Engine :React fiber-->React 16 on wards		
                        -------------------------------
 			      |
 			 Javascript Engine
@@ -790,8 +791,18 @@ What is this code is all about?
 React uses declarative and dsl  programming language
 
 Declarative:
+  =>you can tell what to do.
   =>more readable , like english
+
+imperative:
+  =>You have to tell what todo, how to do?
+  languages- c,c++,java,javascript,
+  libs : jquery
  
+GPL:
+  General purpose programming languages are used to build many category application
+ c,c++,java...
+
 DSL:
   Language created for only one specific purpose, cant be used for other domains
 
@@ -799,6 +810,622 @@ HTML -  can be used only for creating web document.
 JSX  - can be used only by react for creating user interfaces.
   
        "Since jsx  is a language cant be executed on browser /mobile directly."
+
+
+JSX compilation model:
+
+                   layout.js / layout.jsx  -source code
+		       |
+		    compiler - babel.js 
+			|
+		    plain js code
+			|-----------------------Dev cycle
+	----------------------------------------- -- Excution cycles Starts
+  Runtime : React Engine  compiled code feed into react engine
+			|
+		  Excute compiled js code : function calls
+			|
+	     create virtual Object tree (in browser V-dom)
+		        |
+		    Render Engine ; will convert react object tree into js dom object tree
+			|
+		   Flush the tree into target
+			|
+	--------------------------------------------
+        |
+       v8
+     Browser
+..............................................................................................
+				 Components
+.............................................................................................
+
+What is Component?
+   Component  is nothing but "Object".
+
+Component term introduced by MicroSoft in 1980s. According to Microsoft Component is object which is having "state(variables),behaviours(methods),User Interface(visual Representation)".
+
+Component represents User Interface
+Component is Object which represents User Interface.
+User interface in browser is represented by HTML element or elements
+
+Component can be represented some time , the object which helps to make up the Userinterface(invisible user interface).
+
+
+element is <h1>Hello</h1>
+
+elements are <div><div><h1>Hello</h1></div></div>
+
+Plain Object:
+ Object without ui is called plain object.
+eg:
+   function Employee() {
+     this.id = 0;
+     this.calculate=function(){}
+   }
+
+   new Employee()
+
+DOM : Document Object Model
+ 
+Document -  html
+Object Model - Representation of HTML elements
+
+Why We use Components model/Architecture?
+  
+=>Componets are independant objects.
+=>Components let you split the UI into independent, reusable pieces, and think about each piece in isolation.
+ 
+Eg : 
+ I am creating a component called "tax calculator".
+ 
+lets say i want to use the tax calculator inside my hr application and inside my sale applcation , and purchase application.
+..............................................................................................
+				One Component is not a component
+.............................................................................................
+In large application, we create more components.
+All components we coimbine to make up other big components or application.
+Such wiring(connecting) components forms the structure called "component tree".
+
+Component Tree:
+   =>Object tree / DOM Tree / Virutal DOM Tree.
+..............................................................................................
+
+How to create Components in react?
+
+We have three patterns.
+
+1.Variable Pattern
+2.function pattern
+3.ES 6 class Pattern
+
+
+1.Variable Pattern
+
+ Variable Pattern is used to create component using expressions.
+
+let/const/var variableName = Object/Component
+
+function Employee(){}
+
+let     employee =          new            Employee();
+?         ?                                  
+keyword referenceVariable = operator       constructor call
+
+
+2.function pattern
+  
+  We use functions to create components.
+  The function can be es 5 function or es 6 arrow functions.
+
+import React from 'react'
+import ReactDOM from 'react-dom';
+
+//create component using functions
+// function Heading() {
+//     return <h1>Hello React!</h1>  // here we return ReactElement(type of Object what we return)
+// }
+
+//Arrow functions : highly recommended
+const Heading = () => <h1>Hello React!</h1> // here we return ReactElement(type of Object what we return)
+
+
+//Imperative way of calling function : which is not recommened
+// ReactDOM.render(Heading(),document.getElementById('root'));
+
+//declarative way of calling function.
+ReactDOM.render(<Heading></Heading>, document.getElementById('root'));
+
+............................................................................................
+
+Create Components Using ES 6 Class:
+....................................
+
+in order to create component  we need to inherit React.Component
+
+React.Component is base class, which contains the follwing things
+
+1.instance variables
+ props
+ state
+2.instance methods
+
+life cycle methods
+ 
+to be discussed later
+render() - Which returns ReactElement
+ 
+other methods
+to be discussed later
+
+3.static variables
+to be discussed later
+
+import React from "react";
+import ReactDOM from 'react-dom';
+
+/**
+ * React.Component is the base class in order to create Components
+ */
+
+class Heading extends React.Component {
+    render() {
+        return <h1>Hello React</h1>
+    }
+}
+
+ReactDOM.render(<Heading></Heading>, document.getElementById('root'));
+..............................................................................................
+	
+Note: 
+  Which pattern is good, or when to use?
+
+ There is no pattern is bad or good.
+
+ In case if react application is running old versions(before 16)
+
+ =>class components 
+     are used to mutate the state using setState method - statefull components
+     Where ever you need life cycle methods
+        
+ =>function components are used to render ui and data - stateless components
+ =>variable components are used just render static markup or tiny components used inside large   components.
+
+
+ In case if react application is running new versions(After 16)
+
+ functions and classes share the same behaviour
+ functions can have state mutations, life cycle methods via a feature called "hooks".
+ funcitional components are very powerfull with respect reuseability.
+..............................................................................................	
+				JSX Rules
+..............................................................................................
+
+JSX - Javascript and XML
+
+What is JSX?
+ JSX is dsl language to create user interfaces
+
+What is relationship with XML?
+
+ Inside JSX , we write javascript code and HTML code only not xml code.
+
+Why the term XML is used?
+
+ When we write JSX code, we need stable mark up standards.
+
+You know very well HTML has weak parser  that means 
+ <h1>hello
+when run the code , the html parser does not stop rendering hello, it never throws any error
+
+in order to avoid instability code inside jsx during compilation, JSX team adopted XML Parser rules, since XML parser has strong parser
+
+Basic XML  rules:
+
+1.every opened element must be closed
+  <h1>Hello</h1>
+  <Welcome></Welcome>
+ some elements may not have closing tag
+  <img /> : image element has no child elements : self closing. 
+
+2. In xml you must have one single root element.
+  all elements must be organized under single root element.
+
+ <h1>Welcome to React</h1>
+ <p>Path finder</p>
+
+In html what can be root element
+ <div>,<span>,all html 5 layout elements header,footer,section,aside...
+
+3.Component names should start with Uppercase,generally would be noun.
+
+
+eg:
+import React from "react";
+import ReactDOM from 'react-dom';
+
+const Heading = ()=>{ 
+    return <h1>Hello
+}
+
+ReactDOM.render(<Heading></Heading>, document.getElementById('root'));
+
+src\index.js
+  Line 8:35:  Parsing error: Unterminated JSX contents. (8:35)
+
+
+Elements with no child : self closing.
+import React from "react";
+import ReactDOM from 'react-dom';
+
+const Heading = ()=>{ 
+    return <h1>Hello</h1>
+}
+
+//ReactDOM.render(<Heading></Heading>, document.getElementById('root'));
+ReactDOM.render(<Heading/>, document.getElementById('root'));
+
+..............................................................................................
+
+import React from "react";
+import ReactDOM from 'react-dom';
+
+const Heading = ()=>{ 
+    return <h1>Hello</h1>
+            <h2>Sapient</h2>
+}
+
+//ReactDOM.render(<Heading></Heading>, document.getElementById('root'));
+ReactDOM.render(<Heading/>, document.getElementById('root'));
+
+ Parsing error: Adjacent JSX elements must be wrapped in an enclosing tag. Did you want a JSX fragment <>...</>? (6:12)
+
+webpack 5.70.0 compiled with 2 errors in 41 ms
+
+How to fix this problem?
+  we need to wrap inside root/parent element.
+
+What can be parent element?
+
+  =>any html container  elements -  table,div,span,header,footer,address,nav
+  =>you can use other components -  Tab,Dashboard....
+
+.............
+Right Code;
+import React from "react";
+import ReactDOM from 'react-dom';
+
+const Heading = () => {
+    return <div>
+        <h1>Hello</h1>
+        <h2>Sapient</h2>
+    </div>
+}
+
+//ReactDOM.render(<Heading></Heading>, document.getElementById('root'));
+ReactDOM.render(<Heading />, document.getElementById('root'));
+..............................................................................................
+Component names should start with Uppercase,generally would be noun.
+
+import React from "react";
+import ReactDOM from 'react-dom';
+
+const heading = () => {
+    return <div>
+        <h1>Hello</h1>
+        <h2>Sapient</h2>
+    </div>
+}
+
+//ReactDOM.render(<Heading></Heading>, document.getElementById('root'));
+ReactDOM.render(<heading />, document.getElementById('root'));
+
+react-dom.development.js:67 Warning: The tag <heading> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.
+    at heading
+
+Here it wont throw any error,but it wont render any thing in the screen.
+you can see warnings in the console. you have to fix it.  
+..............................................................................................
+				 How jsx code gets compiled?
+
+How code gets compiled?
+
+source code: jsx code
+
+function Welcome() {
+      return <h1>Welcome To React!</h1>;
+}
+	|
+     babel.js - compiler 
+|	
+|
+compiled code
+function Welcome() {
+  return React.createElement(
+    'h1',
+    null,
+    'Welcome To React!'
+  );
+}
+|
+runtime : react engine
+function Welcome() {
+  return React.createElement(
+    'h1',
+    null,
+    'Welcome To React!'
+  );
+}
+|
+//React.createElement
+function createElement(args){
+   document.createElement(args); // low level api call
+..............................................................................................
+				Component Composition
+..............................................................................................
+
+How to create Component tree?
+
+Layouts:
+
+ Page
+   Header
+   Body 
+   Footer
+
+How to create components and compose them?
+import React from "react";
+import ReactDOM from 'react-dom';
+//Header
+const Header = () => <header>
+    <h1>Sapient</h1>
+</header>
+//Footer
+const Footer = () => <div>
+    <h3>Footer</h3>
+</div>
+//Body
+const Body = () => <div>
+    <p>Publicis Sapient is an American digital consulting company, founded as Sapient in Cambridge, Massachusetts in 1990 by Jerry Greenberg and J. Stuart Moore</p>
+    <p>
+        On February 6, 2015, Sapient became a fully owned division of French advertising giant Publicis, in a deal valued at $3.7bn (£2.3bn)
+    </p>
+</div>
+
+const Page = ()=> <div>
+    <Header/>
+    <Body/>
+    <Footer/>
+</div>
+
+ReactDOM.render(<Page />, document.getElementById('root'));
+..............................................................................................
+				React Dev tools
+..............................................................................................
+
+React dev tool is used to visualize the component tree in the browser, without looking the source code ,how the tree has been constructured.
+
+How to install react dev tool?
+
+https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?hl=en
+
+How to use react dev tool?
+
+ 1.lanuch application
+ 2.open dev tool in side chrome
+.............................................................................................
+				Component Compostion and Modularity
+..............................................................................................
+
+In react application, we dont / never dump the code into single file, we need modularize the application.
+
+File Structure
+Is there a recommended way to structure React projects?
+
+  React doesn’t have opinions on how you put files into folders. 
+  That said there are a few common approaches popular in the ecosystem you may want to consider.
+
+Grouping by features or routes
+  One common way to structure projects is to locate CSS, JS, and tests together inside folders grouped by feature or route.
+			
+common/
+  Avatar.js
+  Avatar.css
+  APIUtils.js
+  APIUtils.test.js
+feed/
+  index.js
+  Feed.js
+  Feed.css
+  FeedStory.js
+  FeedStory.test.js
+  FeedAPI.js
+profile/
+  index.js
+  Profile.js
+  ProfileHeader.js
+  ProfileHeader.css
+  ProfileAPI.js
+
+Grouping by file type
+ Another popular way to structure projects is to group similar files together, for example:
+
+api/
+  APIUtils.js
+  APIUtils.test.js
+  ProfileAPI.js
+  UserAPI.js
+components/
+  Avatar.js
+  Avatar.css
+  Feed.js
+  Feed.css
+  FeedStory.js
+  FeedStory.test.js
+  Profile.js
+  ProfileHeader.js
+  ProfileHeader.css
+
+Some people also prefer to go further, and separate components into different folders depending on their role in the application. For example, Atomic Design is a design methodology built on this principle. Remember that it’s often more productive to treat such methodologies as helpful examples rather than strict rules to follow.
+
+               "https://bradfrost.com/blog/post/atomic-web-design/"
+
+
+File Name conventions:
+
+ FileName must match component feature  - profile 
+
+File Name can be saved as fileName.js or fileName.jsx
+
+Rules for jsx extensions:
+
+-Root file (index,App) files must not be saved with ".jsx" , root files must be saved only with .js extension.
+
+-Barrel export feature must be used in large application.
+
+src/body/body.jsx
+import React from 'react';
+
+export const Body = () => <div>
+    <p>Publicis Sapient is an American digital consulting company, founded as Sapient in Cambridge, Massachusetts in 1990 by Jerry Greenberg and J. Stuart Moore</p>
+    <p>
+        On February 6, 2015, Sapient became a fully owned division of French advertising giant Publicis, in a deal valued at $3.7bn (£2.3bn)
+    </p>
+</div>
+
+
+src/footer/footer.jsx
+import React from 'react';
+
+export const Footer = () => <div>
+    <h3>Footer</h3>
+</div>
+
+
+src/header/header.jsx
+import React from 'react';
+
+export const Header = () => <header>
+    <h1>Sapient</h1>
+</header>
+
+
+
+src/layouts/page.jsx
+import { Header } from '../header/header';
+import { Footer } from '../footer/footer'
+import { Body } from '../body/body'
+
+export const Page = () => <div>
+    <Header />
+    <Body />
+    <Footer />
+</div>
+
+src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom'
+import { Page } from './layout/page';
+
+const App = () => <div>
+    <Page />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+ 
+.............................................................................................
+				Barrel export
+.............................................................................................
+
+Use Case :
+
+=>How to avoid multiple import of things from same folder
+=>how to avoid file names while import
+
+Barrel export solves the above problem
+
+src/header
+ -header.jsx
+ -menubar.jsx
+ -index.js
+
+Steps:
+1 inside every subfolders(header,body,profile)
+ create index.js
+
+2.import what ever you want to export outside 
+
+3. you re export again what ever you have imported
+
+
+src/header/index.js
+
+import { Header } from './header'
+import { MenuBar } from './menubar'
+
+//barrel export : Re export
+export { Header, MenuBar }
+
+
+// import { Header } from '../header/header';
+// import { MenuBar } from '../header/menubar';
+import { Header, MenuBar } from '../header'; // here index.js refered automatically
+// import { Footer } from '../footer/footer'
+import { Footer } from '../footer'
+import { Body } from '../body'
+// import { Body } from '../body/body'
+import React from 'react'
+
+export const Page = () => <div>
+    <Header />
+    <MenuBar />
+    <Body />
+    <Footer />
+</div>
+..............................................................................................
+				Tools for development
+
+1.dev tool
+2.lint tool
+
+ES lint:
+ESLint is a static code analysis tool for identifying problematic patterns found in JavaScript code. 
+It was created by Nicholas C. Zakas in 2013.
+Rules in ESLint are configurable, and customized rules can be defined and loaded.
+ESLint covers both code quality and coding style issues
+
+2.code generation tools in vs code.
+  Go to vs code plugins , install any react code generation plugin - simple react 
+
+3.Code formating
+   Alt + shift
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
