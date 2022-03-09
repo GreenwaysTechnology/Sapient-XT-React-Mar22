@@ -1925,31 +1925,310 @@ export { Name, Profile }
 
 Assingment:
   Write all the Profile components, pass data show all profile data.
+..............................................................................................
+			    class Components and props
+..............................................................................................
+
+class Profile extends React.Component {
+    
+    render(){
+        return <div className="container">
+                <h1>Profile details</h1>
+        </div>
+    }
+}
+
+In the class components  how to access props?
+
+ React.Component base class has instance variable "props" , this variables gets initalized when ever we pass props
 
 
+=>In side Component class , props instance variable by default gets initalized with empty literal object
+
+   class Compoent{
+     props = {};
+   }
+=> As soon as we pass properties , props instance variable's object gets augmented(added)
+
+function props vs class props
+
+=>function props are passed as parameter
+=>class props are initalized with help of instance variable
+
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+
+class Profile extends React.Component {
+
+    render(){
+     console.log(this.props)
+        return <div className="container">
+                <h1>Profile details</h1>
+                <h2>Id : {this.props.id}</h2>
+                <h2>Name {this.props.name}</h2>
+                <h2>Status {this.props.status ? "Avaiable" : "Not Available"}</h2>
+        </div>
+    }
+}
 
 
+const App = () => {
+    return <Profile id={1} name="Subramanian" status={true} />
+}
 
 
+ReactDOM.render(<App />, document.getElementById('root'))
+..............................................................................................
+			What if i dont supply Props to Component -Default Props
+.............................................................................................
+if you dont pass any property, we can supply default props which saves lot of runtime bugs.
+
+When you design component, it is highly recommended to have default Props- This is best Practice
 
 
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+
+//default Args
+function multiply(a = 0, b = 0) {
+    console.log(`a ${a} b ${b}`)
+    return a * b; //NaN
+}
+console.log(multiply(6, 3))
+console.log(multiply())
 
 
+const Profile = props => {
+    return <div className="container">
+        <h1>Profile details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name {props.name.toUpperCase()}</h2>
+        <h2>Status {props.status ? "Avaiable" : "Not Available"}</h2>
+    </div>
+}
+//if you dont pass any property, we can supply default props which saves lot of runtime bugs.
+Profile.defaultProps = {
+    id: 0,
+    name: 'default',
+    status: false
+}
+const App = () => {
+    return <div>
+        <Profile />
+        <Profile id={1} />
+        <Profile id={1} name="ram" status={true}/>
+
+    </div>
+}
 
 
+ReactDOM.render(<App />, document.getElementById('root'))
+
+Note: for class components are also the same syntax.
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+
+class Profile extends React.Component {
+    //default props inside class : which is not recommended
+    static defaultProps = {
+        id: 0,
+        name: 'default',
+        status: false
+    }
+    render() {
+        console.log(this.props)
+        return <div className="container">
+            <h1>Profile details</h1>
+            <h2>Id : {this.props.id}</h2>
+            <h2>Name {this.props.name}</h2>
+            <h2>Status {this.props.status ? "Avaiable" : "Not Available"}</h2>
+        </div>
+    }
+}
+// Profile.defaultProps = {
+//     id: 0,
+//     name: 'default',
+//     status: false
+// }
+const App = () => {
+    return <div>
+        <Profile />
+        <Profile id={1} />
+        <Profile id={1} name="ram" status={true} />
+
+    </div>
+}
 
 
+ReactDOM.render(<App />, document.getElementById('root'))
+..............................................................................................
+			Property Validation or Property Constraints
+.............................................................................................
+
+Javascript is dynamic typed language, meaning that the type of variable is not verified during compile time.
+
+dyamic typed/weak typing
+
+var a=1;
+console.log(a) => 1 => type is number
+
+you can reinitalize the with different types
+a="hello"
+console.log(a) => "hello" => type is string
+
+In c: - Strongly typed  /static typed
+int a=10
+a="hello" -compile time error 
+
+Type script : Strongly static typed javascript
+
+let a:number =10;
+a="hello"
+
+Inside compoent if pass data , can i enforce the react that accept only the type what i want.
+
+Yes , we can do with help of property validator.
+Property validator gives only warning , it wont stop rendering incase there is any type error.
 
 
+in order to write property rule, react provides a separate lib "prop-types"
+
+Steps:
+npm install --save prop-types
 
 
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+import PropTypes from 'prop-types';
 
+const Profile = props => {
+    return <div className="container">
+        <h1>Profile details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name {props.name.toUpperCase()}</h2>
+        <h2>Status {props.status ? "Avaiable" : "Not Available"}</h2>
+    </div>
+}
+//if you dont pass any property, we can supply default props which saves lot of runtime bugs.
+Profile.defaultProps = {
+    id: 0,
+    name: 'default',
+    status: false
+}
+//set property validation rules for property
+Profile.propTypes = {
+    //rules for property
+    id: PropTypes.number,
+    name:PropTypes.string,
+    status:PropTypes.bool
+}
 
+const App = () => {
+    return <div>
+        <Profile id={"a;dfjsadlf"} name="ram" status={"test"} />
 
+    </div>
+}
+ReactDOM.render(<App />, document.getElementById('root'))
 
+Output:
+Warning: Failed prop type: Invalid prop `id` of type `string` supplied to `Profile`, expected `number`.
+    at Profile (http://localhost:3000/static/js/bundle.js:38:33)
+    at App
 
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+import PropTypes from 'prop-types';
 
+const Profile = props => {
+    return <div className="container">
+        <h1>Profile details</h1>
+        <h2>Id : {props.id}</h2>
+        <h2>Name {props.name.toUpperCase()}</h2>
+        <h2>Status {props.status ? "Avaiable" : "Not Available"}</h2>
+    </div>
+}
+//if you dont pass any property, we can supply default props which saves lot of runtime bugs.
+Profile.defaultProps = {
+    id: 0,
+    name: 'default',
+    status: false
+}
+//set property validation rules for property
+Profile.propTypes = {
+    //rules for property
+    id: PropTypes.number,
+    name:PropTypes.string,
+    status:PropTypes.bool
+}
 
+const App = () => {
+    return <div>
+        <Profile id={1} name="ram" status={true} />
+
+    </div>
+}
+ReactDOM.render(<App />, document.getElementById('root'))
+
+...........................................................................................
+				Property validation in class Components
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+import PropTypes from 'prop-types';
+
+class Profile extends React.Component {
+    //default props inside class : which is not recommended
+    static defaultProps = {
+        id: 0,
+        name: 'default',
+        status: false
+    }
+    static propTypes = {
+        //rules for property
+        id: PropTypes.number,
+        name:PropTypes.string,
+        status:PropTypes.bool
+    }
+    
+    render() {
+        console.log(this.props)
+        return <div className="container">
+            <h1>Profile details</h1>
+            <h2>Id : {this.props.id}</h2>
+            <h2>Name {this.props.name}</h2>
+            <h2>Status {this.props.status ? "Avaiable" : "Not Available"}</h2>
+        </div>
+    }
+}
+// Profile.defaultProps = {
+//     id: 0,
+//     name: 'default',
+//     status: false
+// }
+//set property validation rules for property
+// Profile.propTypes = {
+//     //rules for property
+//     id: PropTypes.number,
+//     name:PropTypes.string,
+//     status:PropTypes.bool
+// }
+
+const App = () => {
+    return <div>
+         <Profile id={1} name="ram" status={true} />
+
+    </div>
+}
+ReactDOM.render(<App />, document.getElementById('root'))
+
+https://www.npmjs.com/package/protypes
+.............................................................................................
 
 
 

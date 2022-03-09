@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import 'bootstrap/dist/css/bootstrap.css'
-import PropTypes from 'prop-types';
 
 class Profile extends React.Component {
     //default props inside class : which is not recommended
@@ -10,13 +9,6 @@ class Profile extends React.Component {
         name: 'default',
         status: false
     }
-    static propTypes = {
-        //rules for property
-        id: PropTypes.number,
-        name:PropTypes.string,
-        status:PropTypes.bool
-    }
-    
     render() {
         console.log(this.props)
         return <div className="container">
@@ -32,17 +24,11 @@ class Profile extends React.Component {
 //     name: 'default',
 //     status: false
 // }
-//set property validation rules for property
-// Profile.propTypes = {
-//     //rules for property
-//     id: PropTypes.number,
-//     name:PropTypes.string,
-//     status:PropTypes.bool
-// }
-
 const App = () => {
     return <div>
-         <Profile id={1} name="ram" status={true} />
+        <Profile />
+        <Profile id={1} />
+        <Profile id={1} name="ram" status={true} />
 
     </div>
 }
