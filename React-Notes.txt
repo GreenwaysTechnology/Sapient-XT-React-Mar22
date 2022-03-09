@@ -1591,7 +1591,7 @@ export const Header = () => <header className="background">
 
 Js comments
 //style object
-const headerStyle = {
+const headerStyle = {s
     color: 'red'
 };
 
@@ -1607,7 +1607,7 @@ export const Header = () => <header className="background">
 				JSX Gotchas
 
 What is gotchas?
-  a sudden unforeseen(dan problem.
+  a sudden unforeseen(dang problem).
 
 JSX looks like HTML but there are some important differences you may run into.
 
@@ -1633,23 +1633,298 @@ dangerouslySetInnerHTML:
 
 So, you can set HTML directly from React, but you have to type out dangerouslySetInnerHTML and pass an object with a __html key, to remind yourself that it’s dangerous. For example:
 
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+
+const Greeter=()=><div>
+
+    {/* This is not safe code */}
+   <div>First &middot; Second</div>
+   <div>10 &lt; 2</div>
+   {/* The below code is safe because , before rendering it has been sanzitized */}
+   <div dangerouslySetInnerHTML={{__html: '10 &lt; 2'}}/>
+   
+   <div dangerouslySetInnerHTML={{__html: 'First &middot; Second'}} />
+
+</div>
+
+ReactDOM.render(<Greeter/>,document.getElementById('root'))
+
+..............................................................................................
+				  Dynamic Page - Data Binding
 ..............................................................................................
 
+Types of web
+
+1.static web
+   -only html markup,hand coded.
+2.dynamic web
+   - html is created on fly with data
+
+How to add data in the component /how to bind data in the component?
+
+data can be represented in many ways.
+
+-primitives - numbers,strings,boolean
+-objects - literal objects, objects created out of class/function
+-arrays - it is also object but collection 
+
+How to bind data inside jsx?
+
+let name='subramanian'
+
+<h1>Hello {name} </h1>
+
+{} -  databinding syntax.
+
+data binding can be
+{variable}
+{expression} - {10*10} {getValue()} {emp.id}
 
 
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+//profile component
 
 
+function getPoints(){
+   return 10;
+}
 
 
+const Profile = () => {
+    const id = 1;
+    const name = "Subramanian";
+    const status = true;
+    const address = {
+        city: 'coimbatore',
+        state: 'Tamil nadu'
+    }
+    return <div className="container">
+        <h1>Profile Details</h1>
+        <h3>Id  {id}</h3>
+        <h3>Name {name} </h3>
+        {/* React converts boolean values into empty string, if you want to display something , you have to use tenary operator to replace empty string */}
+        <h3>status {status ? "Available" : "Not Available"}</h3>
+        <h3>Points {getPoints() * 2 }</h3>
+        <address>
+            {address.city} {address.state}
+        </address>
+    </div>
+}
+ReactDOM.render(<Profile />, document.getElementById('root'))
+..............................................................................................
+			  Compoent Design Principles of React
+.............................................................................................
 
 
+Data can be declared for a component in two ways.
+
+1.data is supplied from outside the component.
+2.data is supplied within the component
 
 
+1.Data is supplied from outside the component.
+
+When component receives data from the outside, this pattern is called as "property pattern" / props pattern.
+
+Outside the component means what? What is outside for the component?
+
+YOu know very well , react creates components and assembles them in hierachical order(tree)
+in the tree model, the one component called as "parent" component and other components are called child component and sibiling components.
+
+outside means "Parent".
+
+    "Data is supplied from the parent compoent to child component" - Props pattern /Property pattern
+..............................................................................................
+
+How to pass data using props pattern?
+
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+
+function add(a, b) {
+    return a + b;
+}
+console.log(add(10, 10))
+
+//child component
+// function Profile(id,name) {
+// function Profile(profile){
+//     return <div className="container">
+//         <h1>Profile Details</h1>
+//         <h3>id {profile.id}</h3>
+//         <h4>Name {profile.name}</h4>     
+//     </div>
+// }
+//props is just variable convention only not syntax.
+// function Profile(props){
+//     return <div className="container">
+//         <h1>Profile Details</h1>
+//         <h3>id {props.id}</h3>
+//         <h4>Name {props.name}</h4>     
+//     </div>
+// }
+const Profile = props => <div className="container">
+    <h1>Profile Details</h1>
+    <h3>id {props.id}</h3>
+    <h4>Name {props.name}</h4>
+    <h4>Status {props.status ? "Avilable" : "Not Available"}</h4>
+    <address>
+        {props.address.city} {props.address.state}
+    </address>
+</div>
+
+//react says that dont pass any values as indivdual paramter.
+//pack all parameters as single literal object and pass that object
+const App = () => {
+    // return Profile(1,"subramanian");
+    //return Profile({id:1,name:"Subramanian",status:true})
+    return <Profile id={1} name="Subramanian" 
+    status={true} 
+    address={{ city: 'Coimbatore', state: 'Tamil Nadu' }} />
+}
 
 
+ReactDOM.render(<App />, document.getElementById('root'))
 
 
+Note: 
+ property vs html attributes
 
+<h1 style="background-color:red">
+     |
+    attribute
+<Profile name="Ram" />
+          |
+      props/property
+
+props and attribtues are syntax based same.
+
+but they are different.
+
+props are special attributes supplied to the components
+attributes are supplied to the html elements.
+..............................................................................................
+			Single Directional /Uni directional data flow Model 
+..............................................................................................
+
+Uni directional data flow model is nothing but passing data from the parent compoent to child components only.
+.............................................................................................
+				 Components Design and Properties
+.............................................................................................
+
+Components in the tree going to get data from the parent component only, even if the components are in the nested.
+
+
+Break the UI into components, pass data from parent to child
+
+Use case: -  Requirement
+
+    Profile
+	id
+        firstName
+        lastName
+        MiddleName
+        gender
+        address
+        email
+        phone
+        status
+        company
+        expereince
+        education
+        skills
+    ........
+    DashBoard
+         AccountSummary
+		Name,AccountNo,Branch,AccountBalance
+         Transaction
+		Narration,date,type,closingbalance
+         Fund Transfer
+		Name,bank,Branch,ifccode, actions
+
+.............................................................................................
+
+Convert the Profile requirement into Components.
+
+ProfileComponent
+	id
+	status
+        skills
+NameComponent
+        firstName
+        lastName
+        MiddleName
+GenderComponent
+        gender
+AddressComponent
+        address
+ContactComponent
+        email
+        phone
+CompanyComponent
+        company
+ExperienceCompoent
+        expereince
+EducationCompoent
+        education
+           -school
+           -degree
+	   
+
+src/index.js
+
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+import { Profile } from "./profile";
+
+const App = () => {
+    return <Profile id={100} firstName="Subramanian" middleName="" lastName="Murugan" />
+}
+
+
+ReactDOM.render(<App />, document.getElementById('root'))
+
+
+src/profile/profile.jsx
+
+import React from 'react';
+import { Name } from './'
+import { Address } from '../address'
+
+
+export const Profile = props => <div>
+    <h1>Profile Details</h1>
+    <h4>id {props.id}</h4>
+    <Name firstName={props.firstName} middleName={props.middleName} lastName={props.lastName} />
+    <Address />
+</div>
+
+
+src/profile/name.jsx
+
+import React from 'react';
+export const Name = props => <div>
+    <h4>First Name {props.firstName}</h4>
+    <h4>Middle Name {props.middleName}</h4>
+    <h4>Last Name{props.lastName}</h4>
+</div>
+
+src/profile/index.js
+
+import { Name } from "./name";
+import { Profile } from "./profile";
+
+export { Name, Profile }
+
+
+Assingment:
+  Write all the Profile components, pass data show all profile data.
 
 
 

@@ -1,17 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom'
+import React from "react";
+import ReactDOM from "react-dom";
+import 'bootstrap/dist/css/bootstrap.css'
+import { Profile } from "./profile";
+
+const App = () => {
+    return <Profile id={100} firstName="Subramanian" middleName="" lastName="Murugan" />
+}
 
 
-const Greeter=()=><div>
-
-    {/* This is not safe code */}
-   <div>First &middot; Second</div>
-   <div>10 &lt; 2</div>
-   {/* The below code is safe because , brefore rendering it has been sanzitized */}
-   <div dangerouslySetInnerHTML={{__html: '10 &lt; 2'}}/>
-   
-   <div dangerouslySetInnerHTML={{__html: 'First &middot; Second'}} />
-
-</div>
-
-ReactDOM.render(<Greeter/>,document.getElementById('root'))
+ReactDOM.render(<App />, document.getElementById('root'))
