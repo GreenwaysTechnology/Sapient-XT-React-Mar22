@@ -394,24 +394,260 @@ const App = props => <div>
 </div>
 ReactDOM.render(<App />, document.getElementById('root'))
 
+..............................................................................................
+		     Stateless components and Statefull Components
+..............................................................................................
+
+Stateless component is component which never mutatates state- all functional components are stateless components.
+
+Statefull component is component which mutates thte state - all class components are statufll components
+.............................................................................................
+				Dyanmic Props - State as prop
+..............................................................................................
+
+The state of component can be passed as prop to another component.
+
+Component Responsiblity:
+
+1.A Component owns data(state) and biz logic(where state mutation happens).
+   -StateFull Component
+ Statefull Component is other wise called as "Container Component"
+
+classes are used as container/statefull components
+
+2.A Component owns only UI logic
+   -Stateless component
+ Stateless component is other wise called as "Presentational Component"
+
+functions are used as "stateless component / presentational Component"
+
+functional components receives data from class components.
+
+state as prop:Dynamic Props
+function as prop: how to pass listener function as prop.
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
 
 
+//container component
+class Counter extends Component {
+    state = {
+        value: 0
+    }
+    onIncrement = () => {
+        this.setState((prevState) => ({ ...prevState, value: prevState.value + 1 }))
+    }
+    render() {
+        return <div className="container">
+            {/* Pass state as prop: dynamic props and also passing function as prop */}
+            <CounterDisplay value={this.state.value} onIncrement={this.onIncrement} />
+
+        </div>
+    }
+}
+//presentational component
+
+const CounterDisplay = props => <div>
+    <h1>Counter Application</h1>
+    <h3>Counter : {props.value}</h3>
+    <button className="btn btn-success"
+        onClick={props.onIncrement}>
+        increment</button>
+</div>
 
 
+const App = props => <div>
+    <Counter />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+..............................................................................................
+				 Event handlers
 
 
+1.Event Handlers can be written in line or outside.
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
 
 
+//container component
+class Counter extends Component {
+    state = {
+        value: 0
+    }
+    onIncrement = () => {
+        this.setState((prevState) => ({ ...prevState, value: prevState.value + 1 }))
+    }
+    render() {
+        return <div className="container">
+            <h1>Counter Application</h1>
+            <h3>Counter : {this.state.value}</h3>
+            <button className="btn btn-success"
+                onClick={this.onIncrement}>
+                increment</button>
+            {/* inline event handler */}
+            <button style={{ margin: 5 }} className="btn btn-success"
+                onClick={() => {
+                    this.setState((prevState) => ({ ...prevState, value: prevState.value - 1 }))
+                }}>
+                decrement</button>
+
+        </div>
+    }
+}
+//presentational component
+
+const App = props => <div>
+    <Counter />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
 
 
+..............................................................................................					Event Listners Deep dive
+..............................................................................................
+
+SyntheticEvent:
+
+ _ it is Event object provided by react to refer dom elements inside react components.
+
+Event Object provides lot of apis
+
+api:
+
+boolean bubbles
+boolean cancelable
+DOMEventTarget currentTarget
+boolean defaultPrevented
+number eventPhase
+boolean isTrusted
+DOMEvent nativeEvent
+void preventDefault()
+boolean isDefaultPrevented()
+void stopPropagation()
+boolean isPropagationStopped()
+void persist()
+DOMEventTarget target
+number timeStamp
+string type
+
+target : To refer the DOM object
+..............................................................................................
+		 How to get Input from the User -How to use Syn Event Object
+...........................................................................................
 
 
+SyntheticEvent object is passed as arg to event listner
 
+ onIncrement = (evt) => {
+        
+ }
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
 
+class UserInput extends Component {
+    state = {
+        text: "defaultValue"
+    }
+    //evt is just variable holding SynEvent Object to capture Event information
+    onUpdate = evt => {
+        this.setState((prevState) => {
+            return { ...prevState, text: evt.target.value }
+        });
+    }
+    onShow = evt => {
+        alert(this.state.text)
+    }
+    render() {
+        return <div className="container">
+            <h1>User Input Application</h1>
+            <input onChange={this.onUpdate} />
+            <button onClick={this.onShow}>Show Value</button>
+            <h2>{this.state.text}</h2>
+        </div>
+    }
+}
 
+const App = props => <div>
+    <UserInput />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+..............................................................................................
+				Todo App
+..............................................................................................
 
+Use Case : 
+1.render todo list
+2.add new todo
+3.rerender added todo.
+			
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
 
+class TodoApp extends Component {
 
+    state = {
+        items: [{
+            id: 0,
+            text: 'Learn React'
+        }], //array of todos
+        text: ''  // new todo to be added
+    }
+    onTextChange = e => {
+        this.setState({ text: e.target.value })
+    }
+
+    handleSubmit = e => {
+        //to stop auto form submission
+        e.preventDefault();
+        //form validation
+        if (this.state.text.length === 0) {
+            return; //return false
+        }
+        const newTodo = {
+            text: this.state.text,
+            id: Date.now()
+        };
+        //update the items array
+        // this.setState(state => {
+        //     return {
+        //         items: state.items.concat(newTodo),
+        //         text: ''
+        //     }
+        // })
+        this.setState((prveState) => ({ ...prveState, items: prveState.items.concat(newTodo), text: '' }))
+    }
+
+    render() {
+        return <div className="container">
+            <h1>Todo App</h1>
+            <hr />
+            <h2>Todos</h2>
+            <ul>
+                {this.state.items.map((todo, index) => {
+                    return <li key={index}>{todo.text}</li>
+                })}
+            </ul>
+            <form onSubmit={this.handleSubmit}>
+                <label htmlFor="new-todo">What needs to be done?</label>
+                <br />
+                <input onChange={this.onTextChange} value={this.state.text} />
+                <button className="btn btn-success" style={{ margin: 5 }}>
+                    +
+                </button>
+            </form>
+        </div>
+    }
+}
+
+const App = props => <div>
+    <TodoApp />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
 
 
 
