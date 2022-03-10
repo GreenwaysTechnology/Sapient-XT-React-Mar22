@@ -1,0 +1,429 @@
+				  Dynamic Data- How to Mutate data
+..............................................................................................
+
+How to mutate data inside component?
+
+With Respect to props, data cant be changed by the component.
+
+What if i want to change the data?
+  There is pattern called state pattern.
+
+In Old React, state pattern can be introduced only inside "class Component".
+
+The word state means data of component.
+
+React.Component class has instance variable called "state"
+
+state
+ The state contains data specific to this component that may change over time.
+ The state is user-defined, and it should be a plain JavaScript object.
+
+state variable's default value is "null".
+we are expected to initalize the data of the component inside object and assign that object to state variable.
+
+state = {
+
+
+}
+Features of state:
+
+1.state is always "object" - we need to encapsulate the data inside literal object like props.
+
+
+Steps: 
+1.declare component class and initalize the state variable,bind in the UI
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+
+
+class Counter extends Component {
+    //component data
+    state = {
+        //you have to encasulate the component data
+        value: 0
+    }
+
+    render() {
+        console.log(this.props)
+        console.log(this.state)
+        return <div>
+            <h1>Counter Application</h1>
+            <h3>Counter : {this.state.value}</h3>
+        </div>
+    }
+}
+
+
+
+const App = props => <div>
+    <Counter />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+..............................................................................................
+				User Interaction and Components
+.............................................................................................
+
+Any UI is subject to user interaction.
+How to interact with User interface?
+ "Event Handling"
+
+Handling Events
+Handling events with React elements is very similar to handling events on DOM elements.
+
+There are some syntax differences:
+
+React events are named using camelCase, rather than lowercase.
+With JSX you pass a function as the event handler, rather than a string.
+
+HTML:
+<button onclick="activateLasers()">
+  Activate Lasers
+</button>
+JSX:
+<button onClick={method}>
+  Activate Lasers
+</button>
+
+Step 2: Declare Event Listener , bind Event Listener with button
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
+
+
+class Counter extends Component {
+    //component data
+    state = {
+        //you have to encasulate the component data
+        value: 0
+    }
+    //old way of binding event listener with elements: which is not recommended in modern react
+    // constructor(props) {
+    //     super(props)
+    //     //bind event listener
+    //     this.onIncrement = this.onIncrement.bind(this)
+    // }
+    // onIncrement() {
+    //     alert('button is clicked')
+    // }
+    //Event Listener
+    onIncrement = () => {
+        alert('button is clicked')
+    }
+
+    render() {
+        console.log(this.props)
+        console.log(this.state)
+        return <div className="container">
+            <h1>Counter Application</h1>
+            <h3>Counter : {this.state.value}</h3>
+            <button className="btn btn-success"
+                onClick={this.onIncrement}>
+                increment</button>
+        </div>
+    }
+}
+
+const App = props => <div>
+    <Counter />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+
+..............................................................................................
+				State Mutation
+.............................................................................................
+
+You may be thinking how to change the state like below
+
+  onIncrement = () => {
+        //increment value of state 
+        this.state.value = this.state.value + 1
+        console.log("value : ",this.state.value)
+    }
+
+After clicking the button, have you noticed, the ui was updated  and logic gets executed.
+
+1.There was no ui update but we can see the values are getting incremented.
+
+How React updates UI?
+
+via "render method"
+
+render:
+ 
+=>it is method called by react engine.
+     can we call render directly inside event listener?
+        Yes,but no impact on ui update 
+    onIncrement = () => {
+         //increment value of state 
+        this.state.value = this.state.value + 1
+        console.log("value : ",this.state.value)
+        this.render()
+    }
+   Note : render should not be called directly
+
+How to call render?
+via React api "setState() ,forceUpdate()"
+
+setState:
+
+=>setState is instance method of React.Component class.
+=>setState trigger render cycles
+
+Syntax:
+
+setState(updater, [callback])
+
+updater = it is function
+callback =it is also function which optional parameter
+
+updater:
+ function having state mutation logic
+
+step1:
+    this.setState(function(){
+            console.log('state mutation logic goes')
+        })
+
+updater function syntax:
+
+takes two args
+
+1.state  is just variable you can have any name - holds the value of state object
+ which is called as "previous state" or "old state"
+2.props is just variable holding current props variable- which is optional
+
+function(state,props){
+            console.log('state mutation logic goes')
+}
+
+function(prevState){
+            console.log('state mutation logic goes')
+}
+
+Updater function returns object, what object, if you want to understand this , we need to under one more functional programming principle called "Pure function 2nd Rule".
+
+
+Pure Functions:
+
+Rule A:
+  If function receives input, the function returns the same input without any mutation.
+  Every Component with respect to props, are pure functions.
+
+Rule B:
+
+ What if function receives input, need to be mutated but it should follow the pure function rule.
+
+With help of "Immutablity"
+
+What is immutable?
+
+creating new object every time when you update the object , immutablity.
+
+if the function does that , that function is called pure function.
+
+pure function must return, "immutable object".
+
+//Pure functions :2nd rule
+
+//Impure function : it changes the input parameter
+function updateProfile_(profile, city) {
+    //update city and return updated profile object: 
+    profile.city = city
+    return profile;
+}
+//Pure function : i need to change the input parameter but it should be pure.
+function updateProfile(profile, city) {
+    //update city and return updated profile object: 
+    //return new Object ,by copying all properties ,with updated
+
+    //in order to return new Object we have many synatx
+    //old syntax : we copy object properties manually 
+    // return {
+    //     id: profile.id,
+    //     name: profile.name,
+    //     city: city
+    // }
+    //2nd syntax:
+    // return Object.assign({}, profile, { city: city })
+    //3rd syntax: spread notation
+    return { ...profile, city }
+}
+
+let profile = {
+    id: 1,
+    name: 'Subramanian',
+    city: 'Chennai'
+}
+// console.log('Before Update', profile)
+// console.log('After Update', updateProfile(profile, 'Coimbatore'))
+let updatedProfile = updateProfile(profile, 'Coimbatore')
+console.log(profile === updatedProfile ? "Same Object " : " Different Object")
+
+What you can make immutable?
+
+->literal objects
+->Array objects
+
+//Pure functions :2nd rule
+
+//Impure function : it changes the input parameter
+function updateProfile_(profile, city) {
+    //update city and return updated profile object: 
+    profile.city = city
+    return profile;
+}
+//Pure function : i need to change the input parameter but it should be pure.
+function updateProfile(profile, city) {
+    //update city and return updated profile object: 
+    //return new Object ,by copying all properties ,with updated
+
+    //in order to return new Object we have many synatx
+    //old syntax : we copy object properties manually 
+    // return {
+    //     id: profile.id,
+    //     name: profile.name,
+    //     city: city
+    // }
+    //2nd syntax:
+    // return Object.assign({}, profile, { city: city })
+    //3rd syntax: spread notation
+    return { ...profile, city }
+}
+
+let profile = {
+    id: 1,
+    name: 'Subramanian',
+    city: 'Chennai'
+}
+// console.log('Before Update', profile)
+// console.log('After Update', updateProfile(profile, 'Coimbatore'))
+let updatedProfile = updateProfile(profile, 'Coimbatore')
+console.log(profile === updatedProfile ? "Same Object " : " Different Object")
+
+//arrays and immutatblity
+//impure
+// function addTodo(todos, newTodo) {
+//     return todos.push(newTodo)
+// }
+//pure : how to return array immutable
+function addTodo(todos, newTodo) {
+    //return todos.concat(newTodo)
+    return [...todos,newTodo]
+}
+let todos = [{
+    title: 'Learn react',
+    done: true
+}];
+
+Object.freeze(todos)
+console.log(addTodo(todos, { title: 'Learn Pure functions', done: false }))
+
+List of Array immutable apis:
+
+1.concat
+2.map
+3.filter
+3.reduce
+
+
+updaterFunction Return value:
+
+=>Should return always immutable object.
+
+                    "setState method is pure function"
+
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
+
+
+class Counter extends Component {
+    //component data
+    state = {
+        //you have to encasulate the component data
+        value: 0
+    }
+    //old way of binding event listener with elements: which is not recommended in modern react
+    // constructor(props) {
+    //     super(props)
+    //     //bind event listener
+    //     this.onIncrement = this.onIncrement.bind(this)
+    // }
+    // onIncrement() {
+    //     alert('button is clicked')
+    // }
+    //Event Listener
+    onIncrement = () => {
+        //increment value of state 
+        // this.state.value = this.state.value + 1
+        // console.log("value : ",this.state.value)
+        // this.setState(function (prveState) {
+        //     console.log('Previous State', prveState)
+        //     console.log('state mutation logic goes')
+        //     //return immutable object
+        //     // return {
+        //     //     value: prveState.value + 1
+        //     // }
+        //     //return Object.assign({}, prveState, { value: prveState.value + 1 })
+        //    // let value = prveState.value + 1
+        //     return { ...prveState, value: prveState.value + 2 }
+        // })
+        // this.setState((prveState) => {
+        //     return { ...prveState, value: prveState.value + 2 }
+        // })
+        this.setState((prveState) => ({ ...prveState, value: prveState.value + 2 }))
+    }
+
+    render() {
+        console.log('inside render ', this.state)
+        return <div className="container">
+            <h1>Counter Application</h1>
+            <h3>Counter : {this.state.value}</h3>
+            <button className="btn btn-success"
+                onClick={this.onIncrement}>
+                increment</button>
+        </div>
+    }
+}
+
+const App = props => <div>
+    <Counter />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

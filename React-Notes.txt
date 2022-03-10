@@ -2293,7 +2293,7 @@ In React where pure function is used.
  
   In the component design.
 
-        "Every Component is pure function with respect props"
+        "Every Component is pure function with respect to props"
 
  Every component receives props as parameter , returns the same without mutation(side effects).
 
@@ -2528,8 +2528,6 @@ List can be used to design different types of  ui.
 3.gridView - table ..tr
 
 
-
-
 import React from 'react';
 import ReactDOM from 'react-dom'
 
@@ -2622,7 +2620,7 @@ const App = props => <div>
 </div>
 
 ReactDOM.render(<App />, document.getElementById('root'))
-
+..............................................................................................
 
 
 
