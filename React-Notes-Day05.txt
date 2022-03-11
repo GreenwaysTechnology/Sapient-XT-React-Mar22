@@ -716,6 +716,90 @@ class SubChildComponent extends React.PureComponent {
 }
 ReactDOM.render(<ParentComponent />, document.getElementById('root'))
 .............................................................................................
+
+How to stop rendering components.
+
+YOu can use any logic.
+logic can be based on props or state or both
+
+currentState or Next State
+
+currentState:
+  state = { 
+     counter:0
+  }
+   what is the current state value -  0
+ nextState 
+    the state to be computed by setState - button -  counter++ -  1
+
+
+currentProps or Next prop
+ currentProp =1
+ NextProp =2
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+class CounterButton extends React.Component {
+
+    state = { count: 1 };
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log('Current State=>', this.state)
+        console.log("Next State =>", nextState)
+        if (nextState.count !== this.state.count) {
+            return true
+        }
+        return false
+    }
+
+    render() {
+        console.log('render is called')
+        return (
+            <>
+                <button
+                    onClick={() => this.setState(state => ({ count: state.count + 1 }))}>
+                    Count: {this.state.count}
+                </button>
+                <button
+                    onClick={() => this.setState(state => ({ count: state.count }))}>
+                    Count: {this.state.count}
+                </button>
+            </>
+        );
+    }
+}
+
+class CounterPureButton extends React.PureComponent {
+
+    state = { count: 1 };
+
+    render() {
+        console.log('render is called')
+        return (
+            <>
+                <button
+                    onClick={() => this.setState(state => ({ count: state.count + 1 }))}>
+                    Count: {this.state.count}
+                </button>
+                <button
+                    onClick={() => this.setState(state => ({ count: state.count }))}>
+                    Count: {this.state.count}
+                </button>
+            </>
+        );
+    }
+}
+ReactDOM.render(<>
+    <h3>Using ComponentShouldUpdate</h3>
+    <CounterButton />
+    <hr />
+    <h3>PureComponent</h3>
+    <CounterPureButton />
+</>
+    , document.getElementById('root'))
+
+
+.............................................................................................
 				Component Will UnMount
 .............................................................................................
 
@@ -729,7 +813,6 @@ componentWillUnmount()
 There is no method to call and test componentWillUnMount. This method is generally called when We "Routers".
 
 ..............................................................................................
-
 
 
 
