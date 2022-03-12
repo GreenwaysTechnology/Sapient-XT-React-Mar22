@@ -174,6 +174,467 @@ const App = props => <div>
 
 ReactDOM.render(<App />, document.getElementById('root'))
 .............................................................................................
+			How to mutate nested Objects
+............................................................................................
+
+let state = {
+    house: {
+        name: 'RavenClaw',
+        points: 10
+    }
+}
+
+return {
+        ...state, // level-0 copy
+        house: {
+            ...state.house, //level -1 copy
+            points: state.house.points + 2
+        }
+    }
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
+
+class Counter extends React.Component {
+    state = {
+        value: 0,
+        text: 'default',
+        isLoaded: false,
+        like: {
+            likes: 0,
+        }
+    }
+    onIncrement = evt => {
+        this.setState(prevState => ({ ...prevState, value: prevState.value + 1 }))
+    }
+    onLoading = evt => {
+        this.setState(prevState => ({ ...prevState, isLoaded: !prevState.isLoaded }))
+    }
+    onLike = evt => {
+        // this.setState(prevState => {
+        //     return {
+        //         ...prevState, // level-0 copy
+        //         like: {
+        //             //  ...prevState.house, //level -1 - inner object  copy
+        //             likes: prevState.like.likes + 2
+        //         }
+        //     }
+        // })
+        this.setState(prevState => ({
+            ...prevState, // level-0 copy
+            like: {
+                //  ...prevState.house, //level -1 - inner object  copy
+                likes: prevState.like.likes + 2
+            }
+        }))
+
+    }
+    render() {
+        console.log("Current State => ", this.state)
+        return <div>
+            <h1>Value : {this.state.value}</h1>
+            <h2>Loading : {this.state.isLoaded ? "Loading" : "Not Loading"}</h2>
+            <h3>Likes {this.state.like.likes}</h3>
+            <button onClick={this.onIncrement}>+</button>
+            <button onClick={this.onLoading}>Loading</button>
+            <div>
+                <button onClick={this.onLike}>Like</button>
+            </div>
+        </div>
+    }
+}
+const MyCounter = props => {
+    //state 
+    const [value, setValue] = useState(0);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [like, setLikes] = useState({
+        likes: 0,
+    })
+    const onIncrement = evt => setValue(value + 1)
+
+    const onLike = evt => {
+        setLikes(prevLikes => ({ ...prevLikes, likes: prevLikes.likes + 2 }))
+    }
+    console.log('...............................................')
+    console.log(`Current State => value: ${value}, isLoaded: ${isLoaded} ,likes ${like.likes}`)
+    return <div>
+
+        <h1>Value : {value}</h1>
+        <h2>Loading : {isLoaded ? "Loading" : "Not Loading"}</h2>
+        <h3>Likes {like.likes}</h3>
+
+        <button onClick={onIncrement}>+</button>
+        <button onClick={() => setValue(value + 1)}>+</button>
+        <button onClick={() => setIsLoaded(!isLoaded)}>Loading</button>
+        <div>
+            <button onClick={onLike}>Like</button>
+        </div>
+    </div>
+}
+
+
+const App = props => <div>
+    <h1>Class Component</h1>
+    <Counter />
+    <hr />
+    <h1>Functonal Component-Hook</h1>
+    <MyCounter />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+............................
+
+Assigment:
+
+let customer = {
+    id: 1,
+    name: 'Subramanian',
+    contact: {
+        address: {
+            city: 'Coimbatore'
+        },
+        communication: {
+            mobileno: '9000000000'
+        }
+    }
+}
+
+Here you need to update mobileNo from '9000000000' to 9007334343,write immutable code.
+.............................................................................................
+		Component Life Methods and functional Components
+.............................................................................................
+comonentDidMount:
+ Used for doing some resource intensive tasks, such as setting up ajax calls for inital page.
+ It is called after inital render
+
+compoentDidUpdate:
+  called after every update finishes.
+
+How to write these two life cycle methods inside functional components.
+
+"useEffect" Hook.
+  =>can replace both life cycle methods.
+
+mount and update phase
+
+useEffect(() => {
+     
+});
+
+useEffect(funcition,[props]) : if there is props changes only this effect will be called.
+useEffect(function) : This is called mount + every ui update
+useEffect(function,[]) -  this is called only mount.
+  
+
+import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
+
+const MyComponent = props => {
+    const [counter, setCounter] = useState(0);
+    useEffect(() => {
+        console.log('mount and update is called')
+    })
+    useEffect(() => {
+        console.log('mount is called')
+    },[])
+    return <div>
+        <h1>Counter {counter}</h1>
+        <button onClick={() => {
+            setCounter(counter + 1)
+        }}>Update UI</button>
+    </div>
+}
+
+const App = props => <div>
+    <h1>Functonal Component-useEffect</h1>
+    <MyComponent />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+.............................................................................................
+				Ajax code inside useEffect
+..............................................................................................
+import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
+
+const TodoApi = {
+    getAllTodos(url) {
+        return fetch(url);
+    }
+}
+const Todos = props => {
+    const [state, setState] = useState({
+        error: null,
+        isLoaded: false, //spiner status
+        todos: [] // data
+    })
+    useEffect(() => {
+        TodoApi.getAllTodos('https://jsonplaceholder.typicode.com/todos')
+            .then(response => response.json())
+            .then(todos => {
+                setTimeout(() => {
+                    setState(prevState => ({ ...prevState, todos: prevState.todos.concat(todos), isLoaded: true }))
+                }, 5000)
+            })
+            .catch(err => {
+                setState(prevState => ({ ...prevState, isLoaded: true, error: err }))
+            });
+    }, [])
+    const { error, isLoaded, todos } = state;
+    if (error) {
+        return <Error error={error} />
+    } else if (!isLoaded) {
+        return <Spinner />
+    } else {
+        return <TodoList todos={todos} />
+    }
+}
+const TodoList = props => {
+    const { todos } = props
+    return <ul className="list-group">
+        {todos.map((todo, index) => (
+            <li key={index}>
+                <span className="badge badge-pill badge-primary">
+                    {todo.id}
+                </span>
+                <span>
+                    {todo.title}
+                </span>
+            </li>
+        ))}
+    </ul>
+}
+const Error = props => {
+    return <>
+        <h2>{props.error}</h2>
+    </>
+}
+const Spinner = props => {
+    return <>
+        <h2 style={{ backgroundColor: 'yellow' }}>Loading...</h2>
+    </>
+}
+
+const App = props => <div>
+    <h1>Ajax calls inside FuncitionalComponent</h1>
+    <Todos />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+.............................................................................................
+				How to write side Effects,componentWillunMount
+
+
+Side Effects , DOM Manipulation,ResourceManagement:
+...................................................
+
+What is Side effects?
+
+Changining DOM elements after vdom is mounted into real dom - componentDidMount.
+
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+
+
+const Customer = props => {
+    const [counter, setCounter] = useState(1);
+    const [screen, setScreen] = useState('Customer Manager App')
+    useEffect(() => {
+        //side effects : dom mutatation.
+        document.title = screen
+    })
+    //mount cycle code only will have clean up columnRuleWidth:
+    useEffect(() => {
+
+        //return a function : componentwillMount
+        return function () {
+            //here all resource cleanup code. like remove listerner,removing timers....
+        }
+    }, [])
+
+    return <div>
+        <h1>Customer Manager App: using Side effects</h1>
+        <h1>Counter : {counter}</h1>
+        <button onClick={() => {
+            setScreen(`${screen} - Update`)
+        }} >ChangeTitle</button>
+    </div>
+}
+
+const App = () => <Customer />
+
+ReactDOM.render(<App />, document.getElementById('root'))
+.............................................................................................
+			Custom Hooks, Why Hooks, How to create modular hooks for yourapp
+.............................................................................................
+
+
+
+Phase -1
+//Custom Hooks
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+
+/**
+ * 
+ * Requirement:
+ *  CustomerComponent
+ *  features
+ *    =>windowTitle update
+ *    =>windowScreen Size calucation
+ */
+const Customer = props => {
+    //feature-1 update Screen title
+    const [screen, setScreen] = useState('Customer Manager App')
+
+    //feature 2 - get Window width
+    const [width, setWidth] = useState(window.innerWidth);
+
+    //useEffect to update window title after component mounted into dom
+    useEffect(() => {
+        document.title = screen;
+    })
+    useEffect(()=>{
+        const handleResize = () => setWidth(window.innerWidth)
+        //imperative dom listner
+        window.addEventListener('resize', handleResize)
+        //clean up code
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    })
+
+    return <div>
+        <h1>Customer Details </h1>
+        <p>Name {"Subramanian"}</p>
+        <p>Address {"Coimbatore"}</p>
+        <hr/>
+        <p>Current Screen size {width}</p>
+        <button onClick={() => {
+            setScreen('CustomerManager App-Update')
+        }}>Update Title</button>
+    </div>
+};
+
+
+const App = () => {
+    return <div>
+        <Customer />
+    </div>
+}
+ReactDOM.render(<App />, document.getElementById('root'));
+
+The above Customer Component having two features
+
+1.window title update
+2.window screen size calucation
+
+What if i want to reuse these features into another components - create your own hooks -custom hooks.
+                   "Class COmponents vs functional Components with hooks"
+
+  "if you have the same logic inside class componets you cant isloate and resue but hooks can"
+
+..............................................................................................
+				Custom Hooks
+
+hooks are just functions.
+//Custom Hooks
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+import { useWindowTitle } from './hooks/screentitlehook';
+import { useWindowInnerWidth } from './hooks/windowsizehook';
+
+const Customer = props => {
+    //feature-1 update Screen title
+    const { setScreen } = useWindowTitle('Customer ManagerApp')
+    //feature 2 - get Window width
+    const width = useWindowInnerWidth();
+
+    return <div>
+        <h1>Customer Details </h1>
+        <p>Name {"Subramanian"}</p>
+        <p>Address {"Coimbatore"}</p>
+        <hr />
+        <p>Current Screen size {width}</p>
+        <button onClick={() => {
+            setScreen('CustomerManager App-Update')
+        }}>Update Title</button>
+    </div>
+};
+
+const Employee = props => {
+    //feature-1 update Screen title
+    //const [screen, setScreen] = useState('Customer Manager App')
+    const { screen, setScreen } = useWindowTitle('Employee ManagerApp')
+
+    //feature 2 - get Window width
+    const [width, setWidth] = useState(window.innerWidth);
+
+    //useEffect to update window title after component mounted into dom
+    useEffect(() => {
+        document.title = screen;
+    })
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth)
+        //imperative dom listner
+        window.addEventListener('resize', handleResize)
+        //clean up code
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    })
+
+    return <div>
+        <h1>Employee Details </h1>
+        <p>Name {"Subramanian"}</p>
+        <p>Address {"Coimbatore"}</p>
+        <hr />
+        <p>Current Screen size {width}</p>
+        <button onClick={() => {
+            setScreen('CustomerManager App-Update')
+        }}>Update Title</button>
+    </div>
+};
+
+const App = () => {
+    return <div>
+        <Customer />
+        {/* <Employee/> */}
+    </div>
+}
+ReactDOM.render(<App />, document.getElementById('root'));
+.............................................................................................
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
