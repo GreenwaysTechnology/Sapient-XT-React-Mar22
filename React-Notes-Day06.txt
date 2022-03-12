@@ -603,13 +603,348 @@ const App = () => {
 }
 ReactDOM.render(<App />, document.getElementById('root'));
 .............................................................................................
-			
+				Error Boundaries
+
+   In the past, JavaScript errors inside components used to corrupt React’s internal state and cause it to emit cryptic errors on next renders. 
+
+ These errors were always caused by an earlier error in the application code, but React did not provide a way to handle them gracefully in components, and could not recover from them.
+
+
+Introducing Error Boundaries
+   A JavaScript error in a part of the UI shouldn’t break the whole app. To solve this problem for React users, React 16 introduces a new concept of an “error boundary”.
+
+ Error boundaries are "React components" that catch JavaScript errors anywhere in their child component tree, log those errors, and display a fallback UI instead of the component tree that crashed. Error boundaries catch errors during rendering, in lifecycle methods, and in constructors of the whole tree below them.
+
+React provides error Boundaries only in class components, there is no eq hooks from the react team, but there are some third parties provide errorboundaries
+
+Error boundaries do not catch errors for:
+
+1.Event handlers
+2.Asynchronous code (e.g. setTimeout or requestAnimationFrame callbacks)
+3.Server side rendering
+4.Errors thrown in the error boundary itself (rather than its children)
+
+ErrorBoundary can act as container object
+
+class ErrorBoundary extends React.Component {
+
+  state = { hasError: false };
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render will show the fallback UI.
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    logErrorToMyService(error, errorInfo);
+  }
+    render(){
+      if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+    }
+}
+
+class YourComponent extends React.Component{ 
+   render(){ }
+}
+
+<ErrorBoundary>
+   <YourComponent />
+</ErrorBoundary>
+...............................................................................................
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { error: null, errorInfo: null };
+    }
+
+    componentDidCatch(error, errorInfo) {
+        // Catch errors in any components below and re-render with error message
+        this.setState({
+            error: error,
+            errorInfo: errorInfo
+        })
+        // You can also log error messages to an error reporting service here
+    }
+
+    render() {
+        if (this.state.errorInfo) {
+            // Error path
+            return (
+                <div>
+                    <h2>Something went wrong.</h2>
+                    <details style={{ whiteSpace: 'pre-wrap' }}>
+                        {this.state.error && this.state.error.toString()}
+                        <br />
+                        {this.state.errorInfo.componentStack}
+                    </details>
+                </div>
+            );
+        }
+        // Normally, just render children
+        return this.props.children;
+    }
+}
+class Counter extends React.Component {
+    state = { counter: 1 }
+
+    handleClick = () => {
+        this.setState(({ counter }) => ({
+            counter: counter + 1
+        }));
+    }
+
+    render() {
+        if (this.state.counter === 5) {
+            // Simulate a JS error
+            throw new Error('I crashed!');
+        }
+        return <h1 onClick={this.handleClick}>{this.state.counter}</h1>;
+    }
+}
+
+function App() {
+    return (
+        <div>
+            <p>
+                <b>
+                    Click on the numbers to increase the counters.
+                    <br />
+                    The counter is programmed to throw when it reaches 5. This simulates a JavaScript error in a component.
+                </b>
+            </p>
+            <hr />
+            <ErrorBoundary>
+                <Counter />
+            </ErrorBoundary>
+
+        </div>
+    );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'))
+..............................................................................................
+				Styled Components
+.............................................................................................
+
+In React we have lot of css frameworks.
+
+ https://styled-components.com/docs/basics#motivation
+
+1.styled components
+    It is css framework.
+
+npm install --save styled-components
+
+1.create a simple component
+
+.container {
+ margin:0
+ pading:0
+ background-color:'#000'
+}
+
+Regular React Component
+ <div className="container">
+    <h1>Hello</h1>
+ </div>
+
+Styled Components:
+  styled-components utilises tagged template literals to style your components.
+
+ ``
+
+import styled from 'styled-component'
+
+const Title = styled.h1`
+  font-size: 1.5em;
+  text-align: center;
+  color: palevioletred;
+`;
+
+
+
+import React from 'react'
+import { useState } from 'react';
+import ReactDOM from 'react-dom'
+import styled from 'styled-components'
+
+//create component 
+const Title = styled.h1`
+font-size: 1.5em;
+text-align: center;
+color: palevioletred;
+`
+const Wrapper = styled.section`
+  padding: 4em;
+  background: papayawhip;
+`;
+const Button = styled.button`
+  /* Adapt the colors based on primary prop */
+  background: ${props => props.primary ? "palevioletred" : "white"};
+  color: ${props => props.primary ? "white" : "palevioletred"};
+
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid palevioletred;
+  border-radius: 3px;
+`;
+// A new component based on Button, but with some override styles
+const TomatoButton = styled(Button)`
+  color: tomato;
+  border-color: tomato;
+`;
+
+
+const Greet = props => {
+    const [message, setMessage] = useState('Hello')
+    return <Wrapper>
+        <Title>{message}</Title>
+        <Button primary onClick={() => {
+            setMessage('Hello,How are you?')
+        }}>Help</Button>
+        <TomatoButton>ContactUs</TomatoButton>
+    </Wrapper>
+}
+
+const App = props => {
+    return <div>
+        <Greet />
+    </div>
+}
+ReactDOM.render(<App />, document.getElementById('root'))
+..............................................................................................
+			Controlled and UnContorlled Components
+..............................................................................................
+
+How to access dom node inside react?
+ 
+From the react, we cant access the dom node directly.
+
+1.via syn event object inside listner.
+  evt.target => DOM object reference
+target property has some limitiations
+  we cant access many properties and methods, what if i want those methods and properties, inside component.
+ 
+2.ref pattern
+  ref means reference, DOM reference.
+  ref is just an variable provided by react to access dom nodes but which is not safer, secure, the reason is react escapes all the vdom process.
+  Dont over use ref ,which degrades app performance.
+
+if a component has ref pattern, those components are called as "UnControlled Components".
+
+
+When to Use Refs
+There are a few good use cases for refs:
+
+Managing focus, text selection, or media playback.
+Triggering imperative animations.
+Integrating with third-party DOM libraries.
+
+creating and attaching reference:
+
+class MyComponent extends React.Component {
+    
+    constructor(props) {
+        super(props);
+        this.myRef = React.createRef();
+    }
+    render() {
+        return <div ref={this.myRef} />;
+    }
+}
+
+const node = this.myRef.current;
+
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+//unControlled Component
+class CustomTextInput extends React.Component {
+    //create Reference object
+    textInput = React.createRef();
+    focusTextInput = () => {
+        // Explicitly focus the text input using the raw DOM API
+        // Note: we're accessing "current" to get the DOM node
+        this.textInput.current.focus();
+    }
+
+    render() {
+        // tell React that we want to associate the <input> ref
+        // with the `textInput` that we created in the constructor
+        return (
+            <div>
+                <input
+                    type="text"
+                    ref={this.textInput} />
+                <input
+                    type="button"
+                    value="Focus the text input"
+                    onClick={this.focusTextInput}
+                />
+            </div>
+        );
+    }
+}
+
+ReactDOM.render(<CustomTextInput />, document.getElementById('root'))
+............................................................................................	
+			 React Lazy Components
+............................................................................................
+
+Web Pack:
+ The web pack packs/bundles the whole app into one single or multiple files which are called "chunks"
+ App = app1.js,app2.js
+
+Webpack has concept called "code spilting". 
+
+ When you load big application in side, i dont want to load all js in one short.
+
+i want load modular wise.
+
+How to enable code spilting?
+ it is part of webpack in general but in react 17, who added feature called React Lazy- will load only files on demand.
+
+React.Lazy -  It is in built COmponent helps to load our components lazy.
+
+greet.js
+
+import React from 'react';
+
+
+const Greet = props => <div>
+    <h1>Lazy Greet</h1>
+</div>
+
+export default Greet;
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 
 
 

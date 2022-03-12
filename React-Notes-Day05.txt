@@ -3,7 +3,7 @@ Component Life Cycles
 Can be classified into 3 phases
 
 1.Mounting
-  This is inital phase of an component
+ This is inital phase of an component
  These methods are called in the following order when an instance of a component is being  created and inserted into the DOM:
  Mount phase methods are called only once, execpt one method - render.
 constructor()

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import ReactDOM from 'react-dom'
 
 const MyComponent = props => {
@@ -6,9 +6,19 @@ const MyComponent = props => {
     useEffect(() => {
         console.log('mount and update is called')
     })
+    //only in update
+    const isInitialMount = useRef(true);
+    useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+        } else {
+            // Your useEffect code here to be run on update
+            console.log('only update')
+        }
+    });
     useEffect(() => {
         console.log('mount is called')
-    },[])
+    }, [])
     return <div>
         <h1>Counter {counter}</h1>
         <button onClick={() => {
