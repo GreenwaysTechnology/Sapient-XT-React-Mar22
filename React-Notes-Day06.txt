@@ -1,0 +1,189 @@
+Hooks
+StyledComponents
+ErrorBoundarys
+LazyLoading
+.............................................................................................
+					Hooks
+............................................................................................
+
+What is hook?
+ It is a new feature introduced in react 16.
+ Simple abstraction for class compoents-  how to remove classes from react.
+
+Intention is functional component for every things.
+
+objective of hooks:
+
+1.to eleminate class components as much possible.
+2.Resuable application behaviours
+   eg:ajax calls
+
+
+Hook is just simple javascript function.
+which may take arg or may not.
+Which may or may not return something 
+ 
+every hook function starts with
+  "use"+functionName ==>hook Syntax
+
+eg:
+"useState"
+"useContext"
+"useEffect"
+"useAjax"
+"useWebSocket"
+"useLayout"
+etc....
+you can create your own hooks as well.
+.............................................................................................
+			 setState elemination 
+..............................................................................................
+
+functional component with state,event handler.
+
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
+
+class Counter extends React.Component {
+    state = {
+        value: 0
+    }
+    onIncrement = evt => {
+        this.setState(prevState => ({ ...prevState, value: prevState.value + 1 }))
+    }
+    render() {
+        return <div>
+            <h1>Value : {this.state.value}</h1>
+            <button onClick={this.onIncrement}>+</button>
+        </div>
+    }
+}
+const MyCounter = props => {
+    //state 
+    const [value, setValue] = useState(0);
+
+    // function onIncrement() {
+    //     //logic
+    //     // setValue(preValue => {
+    //     //     console.log(`PreValue ${preValue}`)
+    //     //     return preValue + 1 // behind this hook returns object only - immutable object
+    //     // })
+    //     // setValue(preValue => preValue + 1)
+    //     setValue(value + 1)
+    // }
+    const onIncrement = evt => setValue(value + 1)
+
+    return <div>
+        <h1>Value : {value}</h1>
+        <button onClick={onIncrement}>+</button>
+        <button onClick={() => setValue(value + 1)}>+</button>
+
+    </div>
+}
+
+
+const App = props => <div>
+    <h1>Class Component</h1>
+    <Counter />
+    <hr />
+    <h1>Functonal Component-Hook</h1>
+    <MyCounter />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+
+useState:
+
+inital Value:
+- can be primitive values , but in state you must wrap inside object
+  useState(1) ,useState("") - even though we use primitive behind, the object is used
+  state = {
+     value:1
+     text:""
+  }
+
+in Hook
+const[value]=  useState(1) ===== > state = {value:1}
+
+You can declare multiple values separatly
+.............................................................................................
+				Multiple State variables in class and functions
+............................................................................................
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
+
+class Counter extends React.Component {
+    state = {
+        value: 0,
+        text: 'default',
+        isLoaded: false
+    }
+    onIncrement = evt => {
+        this.setState(prevState => ({ ...prevState, value: prevState.value + 1 }))
+    }
+    onLoading = evt => {
+        this.setState(prevState => ({ ...prevState, isLoaded: !prevState.isLoaded }))
+    }
+    render() {
+        console.log("Current State => ", this.state)
+        return <div>
+            <h1>Value : {this.state.value}</h1>
+            <h2>Loading : {this.state.isLoaded ? "Loading" : "Not Loading"}</h2>
+            <button onClick={this.onIncrement}>+</button>
+            <button onClick={this.onLoading}>Loading</button>
+        </div>
+    }
+}
+const MyCounter = props => {
+    //state 
+    const [value, setValue] = useState(0);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    // function onIncrement() {
+    //     //logic
+    //     // setValue(preValue => {
+    //     //     console.log(`PreValue ${preValue}`)
+    //     //     return preValue + 1 // behind this hook returns object only - immutable object
+    //     // })
+    //     // setValue(preValue => preValue + 1)
+    //     setValue(value + 1)
+    // }
+    const onIncrement = evt => setValue(value + 1)
+    console.log('...............................................')
+    console.log(`Current State => value: ${value}, isLoaded: ${isLoaded}`)
+    return <div>
+
+        <h1>Value : {value}</h1>
+        <h2>Loading : {isLoaded ? "Loading" : "Not Loading"}</h2>
+
+        <button onClick={onIncrement}>+</button>
+        <button onClick={() => setValue(value + 1)}>+</button>
+        <button onClick={() => setIsLoaded(!isLoaded)}>Loading</button>
+
+    </div>
+}
+
+
+const App = props => <div>
+    <h1>Class Component</h1>
+    <Counter />
+    <hr />
+    <h1>Functonal Component-Hook</h1>
+    <MyCounter />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+.............................................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
