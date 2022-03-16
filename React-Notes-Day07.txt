@@ -1,0 +1,687 @@
+					Unit Testing
+..............................................................................................
+
+What is Unit Testing?
+   The testing application behaviours during development cycle whether the application behaviour is working as client expecation. This kind of testing is called "Unit Testing"
+
+ UNIT TESTING is a type of software testing where individual units or components of a software are tested. 
+
+The purpose is to validate that each unit of the software code performs as expected. Unit Testing is done during the development (coding phase) of an application by the  developers.
+
+Unit Tests isolate a section of code and verify its correctness.
+  A unit may be an individual function, method, procedure, module, or object.
+
+
+Why Unit Testing?
+	If proper unit testing is done in early development, then it saves time and money in the end.
+
+Test Strategy
+  The various activites are performed during testing, these called Test strategy.
+
+1.What  procedure having to be used?
+2.Which module is going to be tested?
+3.Which entry and exit criteria apply?
+4.Which type of testing needs to be implemented?
+
+Javascript Testing:
+
+=>Test Runtime
+    Where test cases(program) is executed
+=>Assertions
+   It is program apis to verify the out put of the application against Client Requirements(Expectation).
+  Actual against Expecation.
+
+
+Test Runtime:
+.................
+
+1.Mocha 
+   Used to run(test) js apps on node and browser.
+2.Jasmine
+   It is also runtime for browsers
+3.Jest
+etc...
+
+Assertions:
+...........
+  apis to verify Actual against Expecation.
+There are lot of assertions libs and frameworks avaialble
+
+1.chai
+   Most fundamental core javascript lib
+  chai internally uses /coimbines other tiny libs
+   -should.js
+   -expect.js
+2.Jamine
+   Jasmine offers assertion apis
+Jasmine is runtime and also provides assertions apis.
+
+3.Jest 
+   Jest offers assertion apis
+Jest is also runtime and provides assetions apis.
+..............................................................................................
+			   React Testing
+.............................................................................................
+
+How to test React applications?
+
+ React team offers "Test Utility" wrapper at core, these apis are not used directly in the real development.
+
+React Testing stack:
+
+1.Jest - Test Runtime
+2.Assertions
+   Enzyme -  it is assertion api used to test dom nodes,by create,manipulate,traverse dom nodes.
+   Testing Library
+       It is univeral javascript libs for all types of framework
+    You can use with react,angular,vue....
+   Testing Library with React
+     React Testing lib
+Modern React has integrated with jest and React Testing lib
+
+..............................................................................................
+				Jest 
+.............................................................................................
+
+Learning Jest fundamentals:
+
+ Jest project setup
+
+=>Plain jest project 
+
+Steps:
+E:\session\sapient\React-XT>mkdir jest-app
+
+E:\session\sapient\React-XT>cd jest-app
+
+E:\session\sapient\React-XT\jest-app>npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help init` for definitive documentation on these fields
+and exactly what they do.
+
+Use `npm install <pkg>` afterwards to install a package and
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (jest-app)
+version: (1.0.0)
+description:
+entry point: (index.js)
+test command:
+git repository:
+keywords:
+author:
+license: (ISC)
+About to write to E:\session\sapient\React-XT\jest-app\package.json:
+
+{
+  "name": "jest-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
+
+
+Is this OK? (yes)
+
+E:\session\sapient\React-XT\jest-app>code .
+
+E:\session\sapient\React-XT\jest-app>mkdir src
+
+E:\session\sapient\React-XT\jest-app>mkdir test
+..............................................................................................
+			     Jest Test
+
+
+Core concepts:
+
+1.Test suit
+  container which contains the collection of Test suite(sub suite and test cases).
+  Test Suit represents  a module of your app
+  
+  Login 
+  registeration
+  checkout
+  payment
+
+2.Test case
+   It represents unit of module.
+   when user gives user and password
+   when user forgets password
+
+  Test Case can be  positive and negative.
+
+  eg;
+     in case of user authentication 
+
+ postive:
+   if user gives right username and password, then how application should behave
+      success
+ Negative:
+   if user gives wrong username and password, then how application should behave
+       failure
+
+How to define Test Suit?
+
+   Test Suit is function called "describe"
+
+How to define Test case?
+    Test case is funcition called "it/test"
+
+  
+installing jest
+
+E:\session\sapient\React-XT\jest-app>npm install --save-dev jest
+
+configuring jest in the package.json
+  "scripts": {
+    "test": "jest"
+  }
+
+E:\session\sapient\React-XT\jest-app>npm test
+
+> jest-app@1.0.0 test
+> jest
+
+No tests found, exiting with code 1
+Run with `--passWithNoTests` to exit with code 0
+In E:\session\sapient\React-XT\jest-app
+  2 files checked.
+  testMatch: **/__tests__/**/*.[jt]s?(x), **/?(*.)+(spec|test).[tj]s?(x) - 0 matches
+  testPathIgnorePatterns: \\node_modules\\ - 2 matches
+  testRegex:  - 0 matches
+Pattern:  - 0 matches
+..............................................................................................
+
+tests/fileName.test.js
+tests/first.test.js
+
+describe('first test suite', () => {
+    it('first test case', () => {
+        console.log('pass')
+    })
+})
+
+npm test
+
+> jest-app@1.0.0 test
+> jest
+
+  console.log
+    pass
+
+      at Object.<anonymous> (tests/first.test.js:3:17)
+
+ PASS  tests/first.test.js
+  first test suite
+    √ first test case (34 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        0.577 s
+Ran all test suites.
+.............................................................................................
+				Jest Assertions- Jest Matchers
+.............................................................................................
+
+Jest Matchers:
+  Jest matchers are api to test actual against expectation
+  Jest uses "matchers" to let you test values in different ways.
+
+eg:
+  expect(actual).assertion(Expectation)
+   |
+ function  returns object on which you call assertion methods.
+
+
+describe('Matcher Suit', () => {
+    it('first matcher', () => {
+        //let res = expect("hello");
+        //console.log(res)
+        //res.toBe("hello")
+        expect("hello").toBe("hello")
+        
+    })
+})
+
+If the requirement matches against actual , it will give result "Test passed".
+
+If the requirement does not matche against actual , it will give exception(error) "Test failed".
+.............................................................................................
+
+Types of Matchers:
+
+1.common matcher
+2.string matchers
+3.number matchers
+4.boolean matchers
+5.Truthiness
+6.Arrays and iterables matchers
+7.Exceptions
+..more
+https://jestjs.io/docs/expect
+
+Truthiness:
+
+toBeNull: matches only null
+toBeUndefined matches only undefined
+toBeDefined is the opposite of toBeUndefined
+toBeTruthy matches anything that an if statement treats as true
+toBeFalsy matches anything that an if statement treats as false
+
+
+describe('Matcher Suit', () => {
+    it('first matcher', () => {
+        //let res = expect("hello");
+        //console.log(res)
+        //res.toBe("hello")
+        expect("hello").toBe("hello")
+
+    })
+    it('Truthiness', () => {
+        const n = null;
+        expect(n).toBeNull();
+        expect(n).toBeDefined();
+        expect(n).not.toBeUndefined();
+        expect(n).not.toBeTruthy();
+        expect(n).toBeFalsy();
+    })
+    it('two plus two', () => {
+        const value = 2 + 2;
+        expect(value).toBeGreaterThan(3);
+        expect(value).toBeGreaterThanOrEqual(3.5);
+        expect(value).toBeLessThan(5);
+        expect(value).toBeLessThanOrEqual(4.5);
+
+        // toBe and toEqual are equivalent for numbers
+        expect(value).toBe(4);
+        expect(value).toEqual(4);
+    });
+
+      
+      it('the shopping list has milk on it', () => {
+        const shoppingList = [
+            'diapers',
+            'kleenex',
+            'trash bags',
+            'paper towels',
+            'milk',
+            'rice'
+          ];
+        expect(shoppingList).toContain('rice');
+        expect(new Set(shoppingList)).toContain('milk');
+      });
+})
+.............................................................................................
+			 How to test application code.
+............................................................................................
+
+As of now , we have hardcoded output, then we verifid
+
+it('two plus two', () => {
+        const value = 2 + 2; //hardcoded value
+        expect(value).toBeGreaterThan(3);
+        expect(value).toBeGreaterThanOrEqual(3.5);
+        expect(value).toBeLessThan(5);
+        expect(value).toBeLessThanOrEqual(4.5);
+
+        // toBe and toEqual are equivalent for numbers
+        expect(value).toBe(4);
+        expect(value).toEqual(4);
+    });
+
+
+src/sum.js
+function sum() {
+    return 10 + 80; //30
+}
+module.exports = sum;
+
+tests/sum.test.js
+const sum = require('../src/sum')
+
+describe('Sum Suit', () => {
+    it('sum should return 30', () => {
+        expect(sum()).toBe(30)
+    })
+    it('if sum not return 30', () => {
+        expect(sum()).not.toBe(20)
+    })
+})
+............................................................................................
+			        Mocking
+...........................................................................................
+
+Testing should be done in isloation. we should not test real apis directly.
+
+Why Mocking?
+
+ =>Testing dependencies are harder
+  eg: you test api which has dependency of database calls,third party api...
+   When you test those dependency must be there in place, then only we can test other wise not    possilble  which creates tight coupling.
+
+How to test dependencies of unit?
+
+  Mocking or faking. any dependency needed for test, need to be mocked.
+  Mocking is nothing about creating real replica in the test env.
+
+Jest Provides an api to mock functions.
+
+How to mock functions?
+
+Let's imagine we're testing an implementation of a function forEach, which invokes a callback for each item in a supplied array.
+
+function forEach(items, callback) {
+  for (let index = 0; index < items.length; index++) {
+    callback(items[index]);
+  }
+}
+const mockCallback = jest.fn(x => 42 + x);
+
+forEach([0, 1], mockCallback);
+
+// The mock function is called twice
+expect(mockCallback.mock.calls.length).toBe(2);
+
+// The first argument of the first call to the function was 0
+expect(mockCallback.mock.calls[0][0]).toBe(0);
+
+// The first argument of the second call to the function was 1
+expect(mockCallback.mock.calls[1][0]).toBe(1);
+
+// The return value of the first call to the function was 42
+expect(mockCallback.mock.results[0].value).toBe(42);
+  
+eg:
+const sum = require('../src/sum')
+
+describe('Sum Suit', () => {
+    
+    it('sum should return 30', () => {
+        //creat mock function from the sum
+        let mockSum = jest.fn(sum)
+        //test mock functions not real function
+        expect(mockSum()).toBe(30)
+        expect(mockSum.mock.results[0].value).toBe(70);
+    })
+   
+})
+..............................................................................................
+				Life Cycle Api - Setup and Teardown
+.............................................................................................
+
+Often while writing tests you have some setup work that needs to happen before tests run, and you have some finishing work that needs to happen after tests run. 
+Jest provides helper functions to handle this.
+
+Repeating Setup For Many Tests
+
+
+beforeEach(() => {
+  initializeCityDatabase();
+});
+
+afterEach(() => {
+  clearCityDatabase();
+});
+
+test('city database has Vienna', () => {
+  expect(isCity('Vienna')).toBeTruthy();
+});
+
+test('city database has San Juan', () => {
+  expect(isCity('San Juan')).toBeTruthy();
+});
+
+
+One-Time Setup
+In some cases, you only need to do setup once, at the beginning of a file. This can be especially bothersome when the setup is asynchronous, so you can't do it inline. Jest provides beforeAll and afterAll to handle this situation.
+
+beforeAll(() => {
+  return initializeCityDatabase();
+});
+
+afterAll(() => {
+  return clearCityDatabase();
+});
+
+test('city database has Vienna', () => {
+  expect(isCity('Vienna')).toBeTruthy();
+});
+
+test('city database has San Juan', () => {
+  expect(isCity('San Juan')).toBeTruthy();
+});
+
+const sum = require('../src/sum')
+
+describe('Sum Suit', () => {
+
+    let expected;
+
+    beforeAll(() => {
+        console.log('init')
+
+    });
+
+    afterAll(() => {
+        console.log('destroyed')
+    });
+
+
+
+    beforeEach(() => {
+        console.log('beforeEach')
+        expected = 30
+    });
+    afterEach(() => {
+        console.log('After Each')
+        expected = undefined
+    });
+    it('sum should return 30', () => {
+        console.log('sum-1 test case')
+        expect(sum()).toBe(expected)
+    })
+    it('if sum  return 30', () => {
+        console.log('sum-2 test case')
+        expect(sum()).toBe(expected)
+    })
+})
+.............................................................................................
+				Testing Async Code
+.............................................................................................
+
+1.Callbacks
+2.Promises
+3.async await
+
+
+callback:
+// Don't do this!
+test('the data is peanut butter', () => {
+  function callback(data) {
+    expect(data).toBe('peanut butter');
+  }
+
+  fetchData(callback);
+});
+
+test('the data is peanut butter', done => {
+  function callback(data) {
+    try {
+      expect(data).toBe('peanut butter');
+      done();
+    } catch (error) {
+      done(error);
+    }
+  }
+
+  fetchData(callback);
+});
+
+.......
+
+src/cb.js
+function fetchData(callback){
+    setTimeout(()=>callback('peanut butter'),1000)
+}
+module.exports = fetchData;
+
+const fetchData = require('../src/cb')
+
+describe('async code test', () => {
+    it('callback test', done => {
+        function callback(data) {
+            try {
+                expect(data).toBe('peanut butter');
+                done(); //once aync operation is completed
+            } catch (error) {
+                done(error);
+            }
+        }
+
+        fetchData(callback);
+    })
+})
+.............................................................................................
+				React- Assertions- Jest -React Testing lib
+.............................................................................................
+
+create-react-app has integrated React Testing lib by default
+
+package.json
+
+"@testing-library/jest-dom": "^5.16.2",
+"@testing-library/react": "^12.1.4",
+"@testing-library/user-event": "^13.5.0",
+
+React testing lib tests dom elements directly.
+
+How to setup libs,what are the apis are available?
+
+core apis are 
+
+render method :
+   Which renders a component for testing purpose
+
+screen :
+  Object which represents dom nodes which is just like jquery dom query apis.
+ 
+
+Steps:
+
+1.import apis necessary for testing
+2.write test  case
+   test('',fun)
+3.render component
+  
+4.get Dom element using screen object
+
+5.start assertions
+
+
+Three libs;
+
+@testing-library/jest-dom: 
+  jest-dom provides a set of custom Jest matchers that you can use to extend Jest. 
+These make your tests more declarative, clearer to read, and easier to maintain.
+
+@testing-library/user-event:
+ user-event tries to simulate the real events that happen in the browser as the user interacts with elements on the page. For example, userEvent.click(checkbox) would change the state of the checkbox.
+
+@testing-library/react:
+   Core api provides to render and get Dom nodes.
+
+
+import React,{useState} from 'react'
+import ReactDOM from 'react-dom'
+
+export const Welcome = props => {
+    const [values, setValues] = useState({
+      firstName: props.firstName,
+      lastName: props.lastName,
+    })
+  
+    const handleChange = event => {
+      setValues({...values, [event.target.name]: event.target.value})
+    }
+  
+    return (
+      <div>
+        <h1>
+          Welcome, {values.firstName} {values.lastName}
+        </h1>
+  
+        <form name="userName">
+          <label>
+            First Name
+            <input
+              value={values.firstName}
+              name="firstName"
+              onChange={handleChange}
+            />
+          </label>
+  
+          <label>
+            Last Name
+            <input
+              value={values.lastName}
+              name="lastName"
+              onChange={handleChange}
+            />
+          </label>
+        </form>
+      </div>
+    )
+  }
+
+ReactDOM.render(<Welcome firstName="Subramanian" lastName="Murugan"/>,document.getElementById('root'))
+
+
+Testing Requrement:
+
+1.Testing correct welcome text when page is loaded.
+
+test('has correct welcome text', () => {
+  render(<Welcome firstName="John" lastName="Doe" />)
+  expect(screen.getByRole('heading')).toHaveTextContent('Welcome, John Doe')
+})
+
+2.test('has correct input value', () => {
+  render(<Welcome firstName="John" lastName="Doe" />)
+  expect(screen.getByRole('form')).toHaveFormValues({
+    firstName: 'John',
+    lastName: 'Doe',
+  })
+})
+.............................................................................................
+                             Simulate user events
+..............................................................................................
+
+There are two ways to simulate user events with React Testing Library. 
+
+One way is to use the user-event library, and the other way is to use fireEvent which is included in React Testing Library. 
+
+user-event is actually built on top of fireEvent (which simply calls dispatchEvent on the given element). user-event is generally recommended because it ensures that all the events are fired in the correct order for typical user interactions.
+
+This helps ensure your tests resemble the way your software is actually used.
+
+https://testing-library.com/docs/react-testing-library/api
+
+
+
+
+
+
+
+
+
+
+
