@@ -771,7 +771,6 @@ const Heading = props => <header>
     {props.title} {props.children}
 </header>
 
-
 const CounterIncrement = props => {
     //get data like "appstate.reducerName.yourstate"
     const value = useSelector(state => state.IncrementReducer.value)
@@ -810,6 +809,326 @@ const App = () => <>
     </Provider>
 </>
 ReactDOM.render(<App />, document.getElementById('root'))
+.....................................................................................
+				Middlewares
+...................................................................................
+
+Middleware is function which gets called before reducer is called.
+Middlewares are used for some preprocessing.
+
+Use cases of middlewares:
+
+1.logging
+2.asynchronous API calls
+
+Middleware is  higher order function.
+
+General Syntax:
+
+const logger = store => next => action => {
+  console.log('dispatching', action)
+  let result = next(action)
+  console.log('next state', store.getState())
+  return result
+}
+
+function logger(store){
+    return function(next){
+         return function(action){
+		//middleware code
+            let res = next(action);
+            return next;
+         }
+   }
+
+}
+store: current store object is passed
+next: function which helps to move from the current to next function
+action: you can access action object.
+
+With out Middleware:
+
+store.dispatch(action)====>store==>invoke reducer===return state==>listner is called
+
+with middlware
+
+store.dispatch(action)== M1--M2--M3--MN ==>==>invoke reducer===return state==>listner is called
+
+in order to integrate middleware work flow, redux offers applyMiddleware function,which need to passed as parameter to the createStore function
+
+
+Middleware types:
+
+1.custom middleware
+const welcome = store => next => action => {
+    //middleware code
+    let res = next(action);
+    console.log("Welcome to ", action)
+    return next;
+}
+2.third party middleware
+npm i --save redux-logger
+
+import { applyMiddleware, createStore } from "redux";
+import React from 'react'
+import ReactDOM from "react-dom"
+import { Provider, useSelector, useDispatch } from "react-redux";
+import logger from 'redux-logger'
+
+const initState = {
+    value: 20
+}
+//it is eq to setState in react
+const counterReducer = (state = initState, action) => {
+    console.log('Previous State => ', state)
+    switch (action.type) {
+        case 'counter/increment':
+            return { ...state, value: state.value + 1 }
+        case 'counter/incrementByAmount':
+            return { ...state, value: state.value + action.payload }
+        default:
+            return state;//default state
+    }
+}
+//middleware
+// function welcome(store) {
+//     return function (next) {
+//         return function (action) {
+//             //middleware code
+//             let res = next(action);
+//             console.log("Welcome to ", action)
+//             return next;
+//         }
+//     }
+
+// }
+//custom middlewares
+const welcome = store => next => action => {
+    //middleware code
+    let res = next(action);
+    console.log("Welcome to ", action)
+    return next;
+}
+
+
+
+//create store object
+const store = createStore(counterReducer, applyMiddleware(welcome,logger));
+
+const Heading = props => <header>
+    {props.title} {props.children}
+</header>
+
+const Counter = props => {
+    const value = useSelector(state => state.value)
+    const increment = useDispatch();
+    const incrementByAmount = useDispatch();
+
+    const onIncrement = () => {
+        increment({ type: 'counter/increment' })
+    }
+    return <div>
+        <Heading title="Sapient">
+            <h1>Counter Application- React -redux</h1>
+        </Heading>
+        <Heading>
+            <h2>Counter : {value}</h2>
+        </Heading>
+        <button onClick={onIncrement}>Increment</button>
+        <button onClick={() => {
+            incrementByAmount({ type: 'counter/incrementByAmount', payload: 10 })
+        }}>IncrmentByAmount</button>
+    </div>
+}
+
+const App = () => <>
+    <Provider store={store}>
+        <Counter />
+    </Provider>
+</>
+ReactDOM.render(<App />, document.getElementById('root'))
+
+.....................................................................................
+
+Async Code and Redux:
+......................
+
+Any async work flow we have to inside middleware only.
+
+There are lot of async middlewares
+
+1.thunk
+2.redux-promise
+3.redux-observable - based on lib called "rxjs"
+4.saga
+
+
+Thunk:
+ for any async work flow -timers,ajax
+
+npm install redux-thunk
+
+import { applyMiddleware, createStore } from "redux";
+import React, { useEffect } from 'react'
+import ReactDOM from "react-dom"
+import { Provider, useSelector, useDispatch } from "react-redux";
+import logger from 'redux-logger'
+import thunk from 'redux-thunk'
+
+const initState = {
+    value: 20,
+    isLoading: true
+}
+//it is eq to setState in react
+const counterReducer = (state = initState, action) => {
+    switch (action.type) {
+        case 'counter/increment':
+            return { ...state, value: state.value + 1,isLoading:false }
+        case 'counter/incrementByAmount':
+            return { ...state, value: state.value + action.payload }
+        default:
+            return state;//default state
+    }
+}
+//action creator, which returns action with delayed manner
+
+const incrementActionCreator = () => {
+    return {
+        type: 'counter/increment'
+    }
+}
+//
+function incrementAsync() {
+    return dispatch => {
+        setTimeout(() => {
+            // Yay! Can invoke sync or async actions with `dispatch`
+            dispatch(incrementActionCreator())
+        }, 5000)
+    }
+}
+
+
+
+//create store object
+const store = createStore(counterReducer, applyMiddleware(thunk, logger));
+
+const Counter = props => {
+    const value = useSelector(state => state.value)
+    const isLoading = useSelector(state => state.isLoading)
+    const increment = useDispatch();
+    const incrementByAmount = useDispatch();
+
+     useEffect(()=>{
+        increment(incrementAsync())
+     },[])
+
+    const onIncrement = () => {
+        console.log(isLoading)
+        increment(incrementAsync())
+    }
+    return <div>
+        <h1>Async Counter Application- React -redux</h1>
+        <h2>Counter : {isLoading ? "Loading" : value}</h2>
+        <button onClick={onIncrement}>Increment</button>
+        <button onClick={() => {
+            incrementByAmount({ type: 'counter/incrementByAmount', payload: 10 })
+        }}>IncrmentByAmount</button>
+    </div>
+}
+
+const App = () => <>
+    <Provider store={store}>
+        <Counter />
+    </Provider>
+</>
+ReactDOM.render(<App />, document.getElementById('root'))
+
+.....................................................................................
+
+Ajax:
+....
+
+import { applyMiddleware, createStore } from "redux";
+import React, { useEffect } from 'react'
+import ReactDOM from "react-dom"
+import { Provider, useSelector, useDispatch } from "react-redux";
+import logger from 'redux-logger'
+import thunk from 'redux-thunk'
+
+//action creator, which returns action with delayed manner
+
+
+const todosReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'todos':
+            return state.concat(action.payload)
+        default:
+            return state;
+    }
+}
+
+function todocreator(todos) {
+    return {
+        type: 'todos',
+        payload: todos
+    }
+}
+function todosAsync() {
+    return dispatch => {
+        fetch('https://jsonplaceholder.typicode.com/todos').then(res => {
+            res.json().then(todos => {
+                dispatch(todocreator(todos));
+            });
+        })
+
+    }
+}
+
+
+//create store object
+const store = createStore(todosReducer, applyMiddleware(thunk, logger));
+
+const Todos = props => {
+    const todos = useSelector(state => state);
+    const getTodos = useDispatch();
+    useEffect(() => {
+        getTodos(todosAsync())
+    }, [])
+    return <div>
+        <h1>Todos App</h1>
+        <ul>
+            {todos.map(todo => <li key={todo.id}>
+                <span>{todo.title}</span>
+            </li>)}
+        </ul>
+    </div>
+}
+
+const App = () => <>
+    <Provider store={store}>
+        <Todos />
+    </Provider>
+</>
+ReactDOM.render(<App />, document.getElementById('root'))
+......................................................................................
+				App Structure in the react-redux
+.....................................................................................
+
+Recommended Project Structure
+
+/src
+   index.js: the starting point for the app
+   App.js: the top-level React component
+/app
+  store.js: creates the Redux store instance
+/features
+   /counter
+      Counter.js: a React component that shows the UI for the counter feature
+      counterReducer.js: the Redux logic for the counter feature
+
+
+
+
 
 
 
