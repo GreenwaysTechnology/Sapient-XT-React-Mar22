@@ -699,7 +699,8 @@ const App = () => <>
     </Provider>
 </>
 ReactDOM.render(<App />, document.getElementById('root'))
-......................................................................................			  Multi Reducers
+......................................................................................			                            Multi Reducers
+
 In React and redux we may have many reducers, each reducer represents a biz logic.
 			
 In redux, we have only one single store object, which stores data inside only one single object- app State.
@@ -1125,7 +1126,7 @@ Recommended Project Structure
    /counter
       Counter.js: a React component that shows the UI for the counter feature
       counterReducer.js: the Redux logic for the counter feature
-
+..............................................................................................
 
 
 
