@@ -1,0 +1,78 @@
+					Dev ops
+..............................................................................................
+
+What is Dev ops?
+
+Pro Dev ops
+
+1.Development - Coder,software enginer
+
+2.Testing 
+
+3.Production -  infra team
+
+Dev ops is process enginering created to stream line dev,testing, production.
+
+we create coordination among theses teams.
+
+Dev - Development
+Ops - Operations
+
+Loosly coupled software dev,testing,delivery model -  Microservices
+.............................................................................................
+				Automation
+..............................................................................................
+
+Removing manual process in the software dev,testing,prod cycles.
+
+in order to remove manual process , the automatiion was introduced.
+
+Once the code is written
+   Code need to be moved to "code repository".
+
+Once Code moved
+   -It has to be compiled
+   -It has to be packed
+   -Testing
+   -Prepare Production build
+   -Move the build to Production server
+ 
+Contionus Integration and Continous Deployment -  CI ,CD
+
+CI/CD is a method to frequently deliver apps to customers by introducing automation into the stages of app development. The main concepts attributed to CI/CD are continuous integration, continuous delivery, and continuous deployment. 
+
+CI Tools:
+
+Jenkins
+
+CD : Contionous Deployment
+...........................
+
+Deploying /moving the application on production server frequently.
+
+Deployment Platforms
+
+1.Bare metal deployment -  Physical server and os , on which apps are deployed.
+2.Virutal deployment
+   - VM deployment
+   - containers deployment
+   - cloud deployment
+
+..............................................................................................
+
+Node and React work flow in ci,cd
+
+1. using jenkins
+
+https://www.jenkins.io/doc/tutorials/build-a-node-js-and-react-app-with-npm/
+..............................................................................................
+
+
+
+
+
+
+
+
+
+
