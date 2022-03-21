@@ -1116,7 +1116,7 @@ exports.sayHello = function () {
 }
 exports.skills = ["react", "node", "microservices"]
 
-src/services/todoservice.js
+src/services/todoservice.js/
 
 
 class TodoService {
@@ -1145,6 +1145,296 @@ HTTP programming
  -express
  -microservices
 File system programming
+..............................................................................................
+Types of node modules:
+
+1.custom module:
+   the moudle created by us
+ eg.todoservice,productservice,mylib
+2.built in modules
+  provided by node
+3.third party modules
+  provided by community
+
+
+HTTP programming
+ -core http
+module used to create non blocking web servers and web applications.
+
+//build simple http server and app
+//import 
+const http = require('http')
+
+//create server and app to handle client request.
+const server = http.createServer((req, res) => {
+    //receive request and handle response in non blocking way
+   res.end('Hello')
+})
+
+//start the server
+server.listen(3000,()=>{
+    console.log(server.address(),"Server is Running")
+})
+
+How to build real time web applications in node js?
+  When we build realtime web we cant use core http module only, the reason core http module wont provide lot of easy way to start app very faster.
+ in order to build real time apps, we need frameworks and libs. node js community provides lot of frameworks.
+
+Http based node frameworks:
+
+1.express.js -https://expressjs.com/
+2.hapi 
+etc.....
+
+Express Js:
+
+It is a framework to build non blocking web apps.
+
+Web apps Types:
+
+1.Dynamic web
+2.Rest apis
+3.SPA 
+
+Express can be used to build dynamic web, rest api and also with SPA.
+
+
+SPA and Server apps: Server side Rendering.
+
+What is Server-Side Rendering? 
+
+Server-side rendering with JavaScript libraries like React is where the server returns a ready to render HTML page and the JS scripts required to make the page interactive. 
+
+Express with React  we can make server side rendering
+
+Next.js is a framework for react for building server side rendering apps.
+
+
+REST api building with Express:
+..............................
+
+Steps:
+
+install express framework.
+
+before that make sure, that package.json file is exits or not
+
+npm init - create package.json
+
+node_modules folder:
+  all installed node modules will be there.
+ these modules are called third party modules
+
+npm install express --save
+
+const express = require('express')
+
+//create application object 
+const app = express();
+
+//app you can expose rest api
+
+//HTTP - GET mapping
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'HOME' })
+})
+
+
+//you can start the server
+app.listen(3000, () => {
+    console.log('Express Server is running')
+})
+..............................................................................................
+
+REST api design consideration:
+
+Resource:
+  Resource is nothing but "Domain" like account,customer,transactions,cards,funds
+
+Api design for given resource.
+ 
+  getting data
+    -get all
+    -filter data 
+      by id,name 
+  sending data
+    saving
+    update
+    delete
+
+CURD operations
+
+C- CREATE - Save - POST
+U -UPDATE - PUT
+R -READ -GET
+D -DELETE - DELETE
+
+URL Desgin:
+
+/api/resource/subresource/subresource
+
+/api/resource/subresource/parameters
+
+URL and HTTP verb mapping:
+
+REQUEST
+
+GET   /api/account/1  - get account details for account no 1
+
+Response:
+
+   [{
+     "id":1,
+     "name":foo
+   }]
+
+Data you may get from the databases or in memory(arrays).
+
+
+Express middlewares:
+ 
+ Express middlewares are utility functions
+
+Used for various request and response processing purposes.
+
+How to transform user input(json into javascript object).
+
+ using express middlewares.
+
+every middleware is simple javascript functions, and we need to install them.
+https://expressjs.com/en/resources/middleware.html
+
+
+$ npm install body-parser
+
+
+const bodyParser = require('body-parser')
+
+..............................................................................................
+
+const express = require('express')
+const bodyParser = require('body-parser')
+
+//account db
+const ACCOUNTS = [{
+    accountNo: 1234223,
+    name: 'Subramanian',
+    openingbalance: 10000,
+    closingbalance: 20000,
+    branch: 'cbe'
+},
+{
+    accountNo: 345343,
+    name: 'Ram',
+    openingbalance: 560000,
+    closingbalance: 2890000,
+    branch: 'Chn'
+},
+{
+    accountNo: 3232323,
+    name: 'John',
+    openingbalance: 1454500,
+    closingbalance: 22323,
+    branch: 'DEL'
+}
+];
+
+//create application object 
+const app = express();
+
+
+//initialize the middlewares -  body-parser
+app.use(bodyParser.json())
+
+
+
+//app you can expose rest api
+
+//HTTP - GET mapping
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Welcom to C-Bank' })
+})
+
+//CURD operations
+//GEt All account
+app.get('/api/accounts/all', (req, res) => {
+    res.status(200).json(ACCOUNTS)
+})
+//SAVE new account.
+app.post('/api/accounts/addNew',(req,res)=>{
+    //read data
+    const account = req.body //get the input sent by client
+    console.log(account);
+    //save the new account
+    const accounts = ACCOUNTS.concat(account)
+    res.status(201).json(accounts)
+})
+
+//UPDATE - path parameter
+app.put('/api/accounts/:id',(req,res)=>{
+  const id = req.params.id
+  
+  //you have to write logic for update arrays and return updated array
+  console.log(id);
+  const account = ACCOUNTS.filter(account=>account.accountNo==id)
+
+  res.status(200).json(account)
+})
+
+//DELETE
+app.delete('/api/accounts/:id',(req,res)=>{
+    const id = req.params.id
+    
+    //you have to write logic for delete arrays and return updated array
+    console.log(id);
+    const account = ACCOUNTS.filter(account=>account.accountNo==id)
+  
+    res.status(200).json(account)
+  })
+  
+
+//you can start the server
+app.listen(3000, () => {
+    console.log('Express Server is running')
+})
+.............................................................................................
+				How to build modular rest applications
+.............................................................................................
+
+in case many routes(resoures), how to modularize the express application.
+
+Resource based modularity:
+
+1.account
+2.transaction
+3.users
+etc...
+
+Express provides the concept called routers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
